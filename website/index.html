@@ -441,7 +441,11 @@
         </div>
         <p class="lede" data-reveal>免费、无账号。首次启动会引导下载模型；也可以选完整离线包，把六个模型一次带走。</p>
       </div>
-      <div class="dl-grid">
+      <div class="dl-switch" role="tablist" aria-label="安装包类型" data-reveal>
+        <button type="button" role="tab" aria-selected="true" data-dl="light">轻量版 <span>9.4 / 161 MB</span></button>
+        <button type="button" role="tab" aria-selected="false" data-dl="full">完整离线版 <span>1.3 GB</span></button>
+      </div>
+      <div class="dl-grid" data-dl-panel="light">
         <article class="dl-card primary" data-reveal>
           <div class="dl-os">
             <svg><use href="#i-apple"/></svg>
@@ -486,10 +490,55 @@
           <div class="sha"><code id="sha-win">fed58b67908cc3a7b78be54dfb51cf244c3a278d0e2412c6a9e25819bcd21a44</code><button type="button" data-copy="sha-win">复制</button></div>
         </article>
       </div>
+      <div class="dl-grid" data-dl-panel="full" hidden>
+        <article class="dl-card primary">
+          <div class="dl-os">
+            <svg><use href="#i-apple"/></svg>
+            <h3>macOS</h3>
+            <span class="ver">v0.8.1 · arm64</span>
+          </div>
+          <div class="dl-meta">
+            <span><svg><use href="#i-dl"/></svg> 1.3 GB · 含全部模型</span>
+            <span><svg><use href="#i-cpu"/></svg> Apple Silicon</span>
+            <span><svg><use href="#i-box"/></svg> 解压后约 1.3 GB</span>
+          </div>
+          <p style="color:#8b90a6;font-size:13px;line-height:1.75">
+            解压后双击 <code>install-models.command</code>，脚本会把六个模型复制到 <code>~/.eryu/models</code> 并打开应用；装好以后不再联网下载。
+          </p>
+          <div style="margin-top:20px">
+            <a class="btn btn-primary btn-block" href="/dl/zzai-0.8.1-mac-arm64-full.zip" download>
+              <svg><use href="#i-dl"/></svg> 下载 macOS 完整离线版
+            </a>
+          </div>
+          <div class="sha"><code id="sha-mac-full">8a6379c0d35711048b41a76a94a74f27362b7ce109b6e2958e6312235fee802f</code><button type="button" data-copy="sha-mac-full">复制</button></div>
+        </article>
+
+        <article class="dl-card">
+          <div class="dl-os">
+            <svg><use href="#i-win"/></svg>
+            <h3>Windows</h3>
+            <span class="ver">v0.8.1 · x64</span>
+          </div>
+          <div class="dl-meta">
+            <span><svg><use href="#i-dl"/></svg> 1.3 GB · 含全部模型</span>
+            <span><svg><use href="#i-cpu"/></svg> x64</span>
+            <span><svg><use href="#i-box"/></svg> 解压后约 1.3 GB</span>
+          </div>
+          <p style="color:#8b90a6;font-size:13px;line-height:1.75">
+            解压后双击 <code>install-full.bat</code>，安装应用、复制全部模型、创建开始菜单项，完成后自动启动。
+          </p>
+          <div style="margin-top:20px">
+            <a class="btn btn-ghost btn-block" href="/dl/zzai-0.8.1-win64-full.zip" download>
+              <svg><use href="#i-dl"/></svg> 下载 Windows 完整离线版
+            </a>
+          </div>
+          <div class="sha"><code id="sha-win-full">4535306a39c1535ef52b28a23d081bb8330947606f7113ebd5766627d61da89b</code><button type="button" data-copy="sha-win-full">复制</button></div>
+        </article>
+      </div>
       <p style="margin-top:16px;color:#6f758c;font-size:12.5px">
         校验方式：<code style="color:#a9aec4">shasum -a 256 文件名</code>（macOS）或 <code style="color:#a9aec4">certutil -hashfile 文件名 SHA256</code>（Windows）。
         也可以从 <a class="text-link" style="display:inline" href="https://github.com/flyeasy/zzai/releases" target="_blank" rel="noopener">GitHub Release</a> 下载同样的安装包。
-        需要一次装齐所有模型？<a class="text-link" style="display:inline" href="download.html#full">下载完整离线版</a>，或到下载页<a class="text-link" style="display:inline" href="download.html#models-dl">单独取某个模型</a>。
+        两个版本的应用完全相同，区别只是模型是否随包。也可以到下载页<a class="text-link" style="display:inline" href="download.html#models-dl">单独取某个模型</a>。
       </p>
     </div>
   </section>

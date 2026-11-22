@@ -425,3 +425,21 @@
     }
   }
 })();
+
+/* 下载页签：轻量版 / 完整离线版 */
+(function () {
+  const bar = document.querySelector(".dl-switch");
+  if (!bar) return;
+  const btns = Array.from(bar.querySelectorAll("button[data-dl]"));
+  const panels = Array.from(document.querySelectorAll("[data-dl-panel]"));
+  const apply = (v) => {
+    panels.forEach((p) => { p.hidden = p.dataset.dlPanel !== v; });
+    btns.forEach((b) => {
+      const on = b.dataset.dl === v;
+      b.classList.toggle("on", on);
+      b.setAttribute("aria-selected", String(on));
+    });
+  };
+  btns.forEach((b) => b.addEventListener("click", () => apply(b.dataset.dl)));
+  apply("light");
+})();
