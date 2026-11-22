@@ -1646,6 +1646,20 @@ table.model .tag {
   vertical-align: 1px;
 }
 
+@media (max-width: 560px) {
+  .dl-os h3 { font-size: 18px; }
+  .dl-os .ver { font-size: 9.5px; padding: 2px 6px; }
+  table.model.model-dl th:nth-child(2),
+  table.model.model-dl td:nth-child(2) { display: none; }
+  table.model.model-dl th,
+  table.model.model-dl td { padding: 12px 10px; }
+  table.model.model-dl { font-size: 12.5px; min-width: 0; }
+  table.model.model-dl .mono { max-width: none; }
+  table.model.req { min-width: 0; font-size: 12px; }
+  table.model.req th,
+  table.model.req td { padding: 10px 8px; }
+}
+
 /* ---------------- 下载卡 ---------------- */
 
 .dl-grid {
@@ -2559,4 +2573,28 @@ pre code {
   #hero-canvas {
     display: none;
   }
+}
+
+
+/* 移动端：模型/要求表不横向溢出（放在文件末尾，压过上面的 min-width） */
+@media (max-width: 560px) {
+  body table.model.model-dl,
+  body table.model.req {
+    min-width: 0;
+    width: 100%;
+  }
+  body table.model.model-dl th,
+  body table.model.model-dl td,
+  body table.model.req th,
+  body table.model.req td {
+    padding: 11px 8px;
+  }
+  body table.model.model-dl th:nth-child(2),
+  body table.model.model-dl td:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .dl-os h3 { white-space: nowrap; font-size: 17px; }
 }
