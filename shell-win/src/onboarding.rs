@@ -1,4 +1,4 @@
-//! 首次启动的六步引导：模型 / 麦克风 / 按键 / 上屏方式 / 试说一句 / 润色。
+//! 首次启动的六步引导：模型 / 麦克风与权限 / 按键 / 上屏方式 / 润色 / 最后试说一句。
 //!
 //! 说明文字直接用 GDI 画（和设置窗口同一套深色视觉），只有输入框、下拉框、按钮是真控件。
 //! 「稍后再说」也会落一个 `onboarding.done` 标记，不再反复弹。
@@ -49,9 +49,10 @@ const STEP_MODEL: usize = 0;
 const STEP_MIC: usize = 1;
 const STEP_HOTKEY: usize = 2;
 const STEP_INSERT: usize = 3;
-const STEP_PROBE: usize = 4;
-const STEP_POLISH: usize = 5;
-const STEP_LAST: usize = STEP_POLISH;
+const STEP_POLISH: usize = 4;
+/// 「试一句」放到最后：先把权限、模型、上屏方式都设好，再验证整条链路。
+const STEP_PROBE: usize = 5;
+const STEP_LAST: usize = STEP_PROBE;
 
 struct Wizard {
     core: &'static Core,
@@ -350,16 +351,12 @@ pub fn open_if_needed(core: &'static Core) {
     if (done && probe_done) || (done_marker().exists() && probe_done) {
         return;
     }
-    // 模型没装好就永远先回模型页：否则「试说一句」注定没字可出（用户反馈 2026-11-21）。
-    // 模型在、但上次没试说成功：回试说那一步。
-    let start_step = if !asr_ready(core) {
-        STEP_MODEL
-    } else if done || done_marker().exists() {
-        STEP_PROBE
-    } else {
-        STEP_MODEL
-    };
-    open_at(core, start_step);
+    // 只要还没走完，就从头按顺序来；绝不再因为「没试说成功」直接把人扔进试说页
+    // （用户 2026-11-22 明确要求：先把权限/模型/上屏方式设好，最后才试）。
+    if done || done_marker().exists() {
+        return;
+    }
+    open_at(core, STEP_MODEL);
 }
 
 pub(crate) fn open_at(core: &'static Core, start_step: usize) {
@@ -418,7 +415,7 @@ fn open_with_step(core: &'static Core, start_step: usize) {
         let hwnd = match CreateWindowExW(
             WINDOW_EX_STYLE::default(),
             class,
-            w!("欢迎使用 Eryu"),
+            w!("欢迎使用字在"),
             WS_POPUP | WS_CLIPCHILDREN,
             wx, wy,
             px(k, 640.0), px(k, 500.0 + HEADER),
@@ -632,9 +629,9 @@ fn paint(hwnd: HWND) {
             STEP_MIC => ("先确认麦克风", "对着麦克风说句话，下面的条会跟着动。"),
             STEP_HOTKEY => ("设定按住说话的键", "任何单键都能按住说话，也可以选组合键。"),
             STEP_INSERT => ("选上屏方式", "粘贴最快；逐字打字兼容性最好。"),
-            STEP_PROBE => ("试说一句", "按住刚才设定的键，把左边这句话读一遍。"),
             STEP_POLISH => ("要不要润色", "润色可选，默认关。会把文字发到你配置的服务。"),
-            _ => ("欢迎使用 Eryu", "按住一个键说话，松手上屏。全部在本机识别，不上传音频。"),
+            STEP_PROBE => ("最后，试一句", "模型、权限和上屏方式都设好了；读一句，看到字就说明整条链路通了。"),
+            _ => ("欢迎使用字在", "先选模型、看权限、定上屏方式，最后再试说。全部在本机识别，不上传音频。"),
         };
         text(hdc, title, px(k, 22.0), px(k, 22.0), C_TEXT, ft);
         text(hdc, sub, px(k, 24.0), px(k, 54.0), C_MUTED, fsm);
@@ -738,7 +735,7 @@ fn paint(hwnd: HWND) {
                         } else if w.probe_passed {
                             "成功：这句话会被记进历史，但不会打进别的程序。"
                         } else {
-                            "没出字时「下一步」是灰的；也可以点「稍后再说」，下次启动会回到这一步。"
+                            "没出字也可以点「开始使用」；之后在设置里随时再试。"
                         };
                         let tip_color = if !engine_ready(w.core) { C_ACCENT } else { C_MUTED };
                         text(hdc, tip, px(k, 24.0), px(k, 374.0), tip_color, fsm);
@@ -980,8 +977,7 @@ extern "system" fn wndproc(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRES
                             let c = cfg_json(w.core);
                             (
                                 id == ID_NEXT
-                                    && ((w.step == STEP_PROBE && !w.probe_passed)
-                                        || (w.step == STEP_MODEL && !w.asr_ready)),
+                                    && w.step == STEP_MODEL && !w.asr_ready,
                                 c.get("insert_mode").and_then(|v| v.as_str()).unwrap_or("paste")
                                     != "keystroke",
                                 c.get("polish_enabled").and_then(|v| v.as_bool()).unwrap_or(false),
@@ -1063,29 +1059,13 @@ extern "system" fn wndproc(hwnd: HWND, msg: u32, wp: WPARAM, lp: LPARAM) -> LRES
                 }
                 match id {
                     ID_NEXT => {
-                        let (step, passed) = {
-                            let g = crate::lock(&WIN);
-                            match g.as_ref() {
-                                Some(w) => (w.step, w.probe_passed),
-                                None => (0, false),
-                            }
-                        };
+                        let step = crate::lock(&WIN).as_ref().map(|w| w.step).unwrap_or(0);
                         let ready = crate::lock(&WIN).as_ref().map(|w| w.asr_ready).unwrap_or(false);
                         if step == STEP_MODEL && !ready {
                             // 没模型就往下走只会死在试说那一步，这里直接说清楚
                             crate::message_box(
-                                "先下载语音模型（点「下载 SenseVoice」，约 233MB），装好会提示。\n也可以点「稍后再说」，下次启动会回到这一步。",
+                                "先下载语音模型（点「下载 SenseVoice」，约 233MB），装好会提示。\n也可以点「稍后再说」，下次启动会从模型这一步开始。",
                             );
-                        } else if step == STEP_PROBE && !passed {
-                            // 试说没过：不往下走，提示继续试
-                            if let Ok(mut g) = WIN.lock() {
-                                if let Some(w) = g.as_mut() {
-                                    if w.probe_hint.is_empty() {
-                                        w.probe_hint = "还没出字：按住键把例句读一遍。".to_string();
-                                    }
-                                }
-                            }
-                            probe_repaint(hwnd);
                         } else if step >= STEP_LAST {
                             finish(hwnd);
                         } else {

@@ -125,8 +125,8 @@ final class OnboardingProbe: ObservableObject {
 
 // MARK: - 控制器
 
-/// 首次启动引导（R-101/102/103）：五步把「模型 / 麦克风 / 试说一句 / 上屏方式 / 润色」讲清楚，
-/// 第 3 步是一次真实的「按住 → 说 → 出字」，成功之前不能往下走（D-110/D-112）。
+/// 首次启动引导（R-101/102/103）：五步把「模型 / 麦克风与权限 / 上屏方式 / 润色 / 试一句」讲清楚。
+/// 顺序是「先设置、最后验证」：试说放在最后一步，没出字也能完成（用户 2026-11-22 反馈）。
 final class OnboardingController {
     private var window: NSWindow?
     private let model: AppModel
@@ -155,7 +155,7 @@ final class OnboardingController {
             backing: .buffered,
             defer: false
         )
-        w.title = "欢迎使用 Eryu"
+        w.title = "欢迎使用字在"
         w.isReleasedWhenClosed = false
         w.center()
         w.contentView = NSHostingView(rootView: OnboardingView(
@@ -219,25 +219,26 @@ final class OnboardingController {
 // MARK: - 五步
 
 private enum Step: Int, CaseIterable {
-    case model, mic, probe, output, polish
+    // 顺序就是引导顺序：先把该给的权限、该装的模型、该选的方式都设好，最后才试说。
+    case model, mic, output, polish, probe
 
     var title: String {
         switch self {
         case .model: return "选一个识别模型"
-        case .mic: return "先确认麦克风有声音"
-        case .probe: return "说一句，看到字上屏"
+        case .mic: return "先确认麦克风和权限"
         case .output: return "选上屏方式"
         case .polish: return "要不要润色"
+        case .probe: return "最后，试一句"
         }
     }
 
     var tip: String {
         switch self {
-        case .model: return "语音只在本机识别。默认 SenseVoice 体积小、速度快；Qwen3 短句更准但吃内存。"
-        case .mic: return "这一步只是确认能收到声音，不保存也不上传。没反应就换个设备或检查系统权限。"
-        case .probe: return "按住说话键（页面里的话筒按钮也行）读完这句话，松开后文字会出现在右边。"
+        case .model: return "语音只在本机识别。默认 SenseVoice 体积小、速度快；Qwen3 短句更准但吃内存。装好一个再往下走。"
+        case .mic: return "这一步确认能收到声音，也把上屏要用的三项系统权限一次看完。不保存也不上传音频。"
         case .output: return "粘贴最快最稳；逐字打字慢一点，但在终端、安全输入框里更可靠。"
         case .polish: return "润色会把这段文字发到你填的服务（默认关）。不开也完全能用。"
+        case .probe: return "模型、麦克风、上屏方式都设好了。按住说话键（或页面里的话筒按钮）读完这句，松开后文字出现在右边，整条链路就通了。"
         }
     }
 }
@@ -261,6 +262,10 @@ private struct OnboardingView: View {
 
     private var sense: ModelInfo? { model.models.first { $0.id == "sense" } }
     private var qwen: ModelInfo? { model.models.first { $0.id == "qwen3" } }
+    /// 当前选中的引擎装好没有（没装好就不让从模型页往下走，否则试说注定没字）
+    private var engineReady: Bool {
+        model.models.contains { $0.active && $0.installed && $0.id != "stub" }
+    }
 
     private var probeText: String {
         probe.finalText.isEmpty ? probe.partial : probe.finalText
@@ -274,8 +279,8 @@ private struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("欢迎使用 Eryu").font(.system(size: 20, weight: .semibold))
-                    Text("按住一个键说话，松手上屏。全部在本机识别，不上传音频。")
+                    Text("欢迎使用字在").font(.system(size: 20, weight: .semibold))
+                    Text("先花一分钟把模型、权限和上屏方式设好，最后再试一句。")
                         .font(.system(size: 12)).foregroundStyle(.secondary)
                 }
                 Spacer()
@@ -317,12 +322,15 @@ private struct OnboardingView: View {
                 if step != .model {
                     Button("上一步") { go(to: Step(rawValue: step.rawValue - 1) ?? .model) }
                 }
-                let probeBlocked = step == .probe && !probe.passed
-                Button(step == .polish ? "开始使用" : "下一步") {
-                    if step == .polish { finish() } else { go(to: Step(rawValue: step.rawValue + 1) ?? .polish) }
+                if step == .model && !engineReady {
+                    Text("先装一个模型才能继续").font(.system(size: 11)).foregroundStyle(.orange)
                 }
-                .defaultActionUnless(probeBlocked)
-                .disabled(probeBlocked)
+                let last = step == .probe
+                Button(last ? "完成" : "下一步") {
+                    if last { finish() } else { go(to: Step(rawValue: step.rawValue + 1) ?? .probe) }
+                }
+                .defaultActionUnless(step == .model && !engineReady)
+                .disabled(step == .model && !engineReady)
             }
             .padding(.horizontal, 24).padding(.vertical, 14)
         }
@@ -490,15 +498,27 @@ private struct OnboardingView: View {
                     .font(.system(size: 12)).foregroundStyle(.orange)
             }
 
-            HStack(spacing: 8) {
-                Text("麦克风权限：\(micName)").font(.system(size: 11)).foregroundStyle(.secondary)
-                if !Permission.microphone.state.ok {
-                    Button("打开系统设置") { Permission.openSettings(.microphone) }
-                        .buttonStyle(.link).font(.system(size: 11))
-                    Button("请求权限") {
-                        Permission.requestMicrophone { model.refreshDevices() }
+            VStack(alignment: .leading, spacing: 5) {
+                Text("上屏要用的权限").font(.system(size: 11)).foregroundStyle(.secondary)
+                ForEach(Permission.allCases, id: \.self) { p in
+                    HStack(spacing: 7) {
+                        Image(systemName: p.state.ok ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                            .font(.system(size: 11))
+                            .foregroundStyle(p.state.ok ? Color.green : Color.orange)
+                        Text(p.title).font(.system(size: 11))
+                        Text(p.state.text).font(.system(size: 11)).foregroundStyle(.secondary)
+                        Spacer()
+                        if !p.state.ok {
+                            Button("去开启") { Permission.openSettings(p) }
+                                .buttonStyle(.link).font(.system(size: 11))
+                        }
                     }
-                    .buttonStyle(.link).font(.system(size: 11))
+                }
+                HStack(spacing: 8) {
+                    Button("一次请求全部") { Permission.requestAll(openPanes: true) }
+                        .buttonStyle(.link).font(.system(size: 11))
+                    Button("刷新") { model.refreshDevices() }
+                        .buttonStyle(.link).font(.system(size: 11))
                 }
             }
 
@@ -510,7 +530,16 @@ private struct OnboardingView: View {
     // MARK: - 第 3 步：试说一句（R-101）
 
     private var probeStep: some View {
-        HStack(alignment: .top, spacing: 18) {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 14) {
+                setupChip("模型", engineReady)
+                setupChip("麦克风", Permission.microphone.state.ok)
+                setupChip("辅助功能", Permission.accessibility.state.ok)
+                setupChip("输入监控", Permission.inputMonitoring.state.ok)
+            }
+            Text("这四项都就绪，试说才有意义；没就绪的先回上一步补，或直接点「完成」稍后再试。")
+                .font(.system(size: 10)).foregroundStyle(.secondary)
+            HStack(alignment: .top, spacing: 18) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("请朗读这句话").font(.system(size: 11)).foregroundStyle(.secondary)
                 Text(ProbeCriterion.example)
@@ -577,7 +606,14 @@ private struct OnboardingView: View {
                 statusLine
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
+    }
+
+    private func setupChip(_ name: String, _ ok: Bool) -> some View {
+        Label(name, systemImage: ok ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+            .font(.system(size: 11, weight: .medium))
+            .foregroundStyle(ok ? Color.green : Color.orange)
     }
 
     private var statusLine: some View {
@@ -586,7 +622,7 @@ private struct OnboardingView: View {
                 Label(failure, systemImage: "exclamationmark.triangle.fill")
                     .foregroundStyle(.orange)
             } else if probe.passed {
-                Text("读到了，点「下一步」继续。")
+                Text("读到了，点「完成」进入字在。")
                     .foregroundStyle(.green)
             } else if probe.phase == "starting" || probe.phase == "listening" {
                 Text("正在听…松开后出字")
@@ -595,7 +631,7 @@ private struct OnboardingView: View {
                 Text("听到了，正在识别…")
                     .foregroundStyle(.secondary)
             } else {
-                Text("成功识别一次之前不能点「下一步」；也可以「稍后再说」，下次启动会回到这里。")
+                Text("还没读到字也可以点「完成」；之后在设置里随时能再试。")
                     .foregroundStyle(.secondary)
             }
         }

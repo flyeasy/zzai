@@ -227,7 +227,7 @@ pub(crate) fn privacy_mode() -> bool {
 }
 
 /// 产品版本：与 mac 的 Info.plist / 安装包名保持一致（发版时一起改）。
-pub(crate) const APP_VERSION: &str = "0.8.2";
+pub(crate) const APP_VERSION: &str = "0.8.3";
 
 fn config_dir() -> String {
     // 与 core 的优先级一致：显式环境变量 > 便携目录 > %APPDATA%\Eryu。
@@ -259,7 +259,7 @@ pub(crate) fn dev_mode() -> bool {
 }
 
 /// 产品版本（跟 README/CHANGELOG 走；Windows 壳不单独发版）
-pub const PRODUCT_VERSION: &str = "0.8.2（预览）";
+pub const PRODUCT_VERSION: &str = "0.8.3（预览）";
 
 fn main() {
     // 启动耗时的起点：后面按「核心就绪 / 界面就绪」各打一行（ERYU_TRACE=1 才写）

@@ -1181,15 +1181,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
-        // 首次启动：五步引导（模型 / 麦克风 / 试说一句 / 上屏方式 / 润色）。
-        // 试说从未成功的老用户也会从第 3 步回来一次（R-101 / `onboarding_probe_done`）。
+        // 首次启动：五步引导（模型 / 麦克风与权限 / 上屏方式 / 润色 / 最后试一句）。
+        // 只在没走完时出现；「试说没做」不再把人从桌面直接拽回试说页（用户 2026-11-22 反馈）。
         let forceOnboarding = CommandLine.arguments.contains("--onboarding")
-        let probePending = model.config.onboarding_done && !model.config.onboarding_probe_done
         let stepArg = Self.onboardingStepArg()
         if !showSettings,
-           forceOnboarding || !model.config.onboarding_done || probePending || stepArg != nil || onboardingSelftest {
+           forceOnboarding || !model.config.onboarding_done || stepArg != nil || onboardingSelftest {
             let ob = OnboardingController(model: model)
-            ob.startStep = onboardingSelftest ? 2 : (stepArg ?? (probePending ? 2 : 0))
+            ob.startStep = onboardingSelftest ? 4 : (stepArg ?? 0)
             ob.onFinish = { [weak self] in
                 // 引导结束：无条件把迷你主窗亮一次并写回 true（R-103 / D-111）
                 self?.model?.setMiniWindow(true)
