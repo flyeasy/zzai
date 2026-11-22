@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>更新日志 — 字在 zzai</title>
+<meta name="description" content="字在的版本更新记录。v0.8.1 是第一个公开版本：双引擎、120 秒长听写、热词自学习、选区改写与局域网听写。">
+<meta name="theme-color" content="#05060a">
+<link rel="canonical" href="https://zzai.harmonyos.fun/changelog.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字在更新日志">
+<meta property="og:description" content="v0.8.1：第一个公开版本。">
+<meta property="og:url" content="https://zzai.harmonyos.fun/changelog.html">
+<meta property="og:image" content="https://zzai.harmonyos.fun/assets/img/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<script src="assets/js/boot.js"></script>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="字在首页">
+      <img src="assets/img/logo.png" alt="" width="34" height="34">
+      <span class="brand-name">字在 <small>zzai</small></span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="index.html#features">功能</a>
+      <a href="models.html">模型</a>
+      <a href="download.html">下载</a>
+      <a href="docs.html">使用说明</a>
+      <a href="changelog.html" aria-current="page">更新</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-gh" href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener" aria-label="GitHub 仓库">
+        <svg><use href="assets/img/icons.svg#i-github"/></svg><span>GitHub</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="download.html">下载</a>
+      <button class="nav-toggle" aria-label="展开菜单" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu">
+  <a href="index.html#features">功能</a>
+  <a href="models.html">模型</a>
+  <a href="download.html">下载</a>
+  <a href="docs.html">使用说明</a>
+  <a href="changelog.html">更新</a>
+  <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">首页</a> / 更新日志</div>
+      <h1>更新日志</h1>
+      <p>只写用户能感知的变化。逐条开发记录在仓库的 CHANGELOG.md 里。</p>
+      <div class="hero-meta" style="margin-top:24px">
+        <span>最新 v0.8.1</span><span>·</span><span>2026-11-22</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="prose">
+        <div class="release">
+          <div class="release-head">
+            <h2 id="v081">v0.8.1</h2>
+            <span class="release-date">2026-11-22 · 首个公开版本</span>
+          </div>
+          <p>字在第一次公开发布。macOS 与 Windows 两端功能对齐，免费、开源、无账号。</p>
+
+          <h3>听写</h3>
+          <ul>
+            <li>双引擎：SenseVoice 默认，Qwen3 短句精度档；设置里点下载、点切换。</li>
+            <li>准流式浮层每 900ms 刷新预览，松手才上屏。</li>
+            <li>长听写最长 120 秒，内部按 30 秒切段自动接续；修掉了松手时最后一句可能丢失的问题。</li>
+            <li>说话中途弹了别的窗口，结果不会再贴错地方：按热键时记住当时的应用，上屏前先切回去；切不回去就只提示、把文字留在剪贴板。</li>
+            <li>浮层录音时文字变宽不再整体向右漂移，中心保持稳定。</li>
+          </ul>
+
+          <h3>上屏</h3>
+          <ul>
+            <li>粘贴与逐字打字两种方式，可按 App 覆盖。</li>
+            <li>逐字打字不再往桌面或任务栏里打；目标吞字时如实报「没看到这段文字」。</li>
+            <li>提权窗口、密码框无法注入，会明确提示而不是假装成功。</li>
+          </ul>
+
+          <h3>热词与改写</h3>
+          <ul>
+            <li>热词只填「想听到的词」，听错的写法由程序从你的编辑里学。</li>
+            <li>修复热词输入框每敲一个字就丢焦点的问题。</li>
+            <li>选区改写 <kbd>⌘E</kbd>：润色、正式、精炼、英文、总结五种，结果就地替换；粘回目标窗口在打开面板前就记下，不再粘到自己身上。</li>
+          </ul>
+
+          <h3>润色</h3>
+          <ul>
+            <li>默认关闭；开启时明确提示文字会离开本机。</li>
+            <li>润色不再返回「半句话」：服务端因长度截断时这一句用原文，并在浮层说明。</li>
+            <li>默认档位固定为「轻度」，不会再出现开关亮着、文字却没变化。</li>
+          </ul>
+
+          <h3>隐私与诊断</h3>
+          <ul>
+            <li>隐私模式：不写历史、失败音频不落盘、浮层不显示文本。</li>
+            <li>诊断包一键导出 / 上传：脱敏，不含识别正文；失败保留本地文件并给出原因。</li>
+            <li>Windows 错误码落盘到 <code>eryu-errors.log</code>，最近 20 条随诊断包带走。</li>
+          </ul>
+
+          <h3>局域网听写（实验）</h3>
+          <ul>
+            <li>默认关闭，只监听 <code>127.0.0.1:8765</code>；允许局域网必须设 token。</li>
+            <li>令牌可一键生成，页面直接给出连接地址与可复制的 curl 示例。</li>
+            <li>只做音频转文字：不上屏、不写历史、不动剪贴板。</li>
+          </ul>
+
+          <h3>界面与安装</h3>
+          <ul>
+            <li>设置页信息层级重排：说明性文字收进 ⓘ，输入框标签在上、左对齐。</li>
+            <li>菜单只留用户会点的两项，排障入口收进 <code>--dev</code>。</li>
+            <li>macOS 安装包版本号对齐 0.8.1；Windows 第二个实例不再弹误导框，直接把已有窗口叫出来。</li>
+            <li>引擎页默认走内置镜像，不再要求填下载地址。</li>
+          </ul>
+
+          <h3>已知限制</h3>
+          <ul>
+            <li>macOS 仅 Apple Silicon（arm64）、13+；Windows 10/11 x64。</li>
+            <li>两端都没有代码签名与公证，首次打开需要手动放行。</li>
+            <li>Qwen3 只适合 ≤30 秒的短句；竞争人声场景下降噪可能让 CER 变差。</li>
+            <li>不做回声消除、不做繁简转换；没有自动更新、唤醒词或云同步。</li>
+          </ul>
+        </div>
+
+        <h2>更早的版本</h2>
+        <p>v0.8.1 之前的迭代是内部开发版，没有对外分发。完整提交记录与逐条修复见仓库：</p>
+        <ul>
+          <li><a href="https://github.com/flyeasy/zzai/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md ↗</a></li>
+          <li><a href="https://github.com/flyeasy/zzai/releases" target="_blank" rel="noopener">GitHub Releases ↗</a></li>
+        </ul>
+
+        <div class="callout" style="margin-top:40px">
+          <svg><use href="assets/img/icons.svg#i-info"/></svg>
+          <div>安装包与校验值以<a href="download.html">下载页</a>为准；Release 页附件同名同大小。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="34" height="34">
+          <span class="brand-name">字在 <small>zzai</small></span>
+        </a>
+        <p>本地优先的 AI 语音输入法。按住说一句，松手文字就在光标处，音频不出本机。</p>
+      </div>
+      <div class="foot-col">
+        <h4>产品</h4>
+        <a href="index.html#features">功能</a>
+        <a href="models.html">模型库</a>
+        <a href="download.html">下载</a>
+        <a href="changelog.html">更新日志</a>
+      </div>
+      <div class="foot-col">
+        <h4>资源</h4>
+        <a href="docs.html">使用说明</a>
+        <a href="privacy.html">隐私说明</a>
+        <a href="index.html#faq">常见问题</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="https://github.com/flyeasy/zzai/blob/main/LICENSE" target="_blank" rel="noopener">开源许可 ↗</a>
+        <a href="https://github.com/flyeasy/zzai/issues" target="_blank" rel="noopener">问题反馈 ↗</a>
+        <a href="https://github.com/k2-fsa/sherpa-onnx/releases" target="_blank" rel="noopener">模型上游 ↗</a>
+      </div>
+    </div>
+    <div class="wordmark" aria-hidden="true">字在</div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> 字在 zzai · 免费开源 · 为 macOS 与 Windows 打造</span>
+      <span class="links">
+        <a href="privacy.html">隐私</a>
+        <a href="docs.html">文档</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>

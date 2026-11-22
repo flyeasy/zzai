@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>字在 zzai — 本地 AI 语音输入法，字在本地，才叫自在</title>
+<meta name="description" content="按住右 Option 说一句，松手文字就落在光标处。字在是一款本地优先的 AI 语音输入法，识别全程在本机完成，音频不上传。支持 macOS 与 Windows，免费开源。">
+<meta name="theme-color" content="#05060a">
+<link rel="canonical" href="https://zzai.harmonyos.fun/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="字在 zzai">
+<meta property="og:title" content="字在 — 本地 AI 语音输入法">
+<meta property="og:description" content="按住说一句，松手就上屏。识别全程在本机，音频不上传。">
+<meta property="og:url" content="https://zzai.harmonyos.fun/">
+<meta property="og:image" content="https://zzai.harmonyos.fun/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<script src="assets/js/boot.js"></script>
+<link rel="preload" href="assets/fonts/space-grotesk-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5M8.5 21.5h7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 19.5h16"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 20 6v6.2c0 4.6-3.2 7.7-8 9-4.8-1.3-8-4.4-8-9V6z"/><path d="m8.6 12 2.3 2.3 4.5-4.6"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5L19.5 10H13z"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 12h2.5M7 8v8M11 4.5v15M15 7v10M19 9.5v5M22 12h-1"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 11h10M4 16h13M4 21h7"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15.5l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10" width="15" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14.5v2.5"/></symbol>
+  <symbol id="i-voice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/><path d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5V20M9 20h6"/><path d="M20.5 7.5c1.2 1.6 1.2 7.4 0 9M3.5 7.5c-1.2 1.6-1.2 7.4 0 9" opacity=".45"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6.5" width="20" height="11" rx="2.5"/><path d="M5.5 10h.01M9 10h.01M12.5 10h.01M16 10h.01M19 10h.01M5.5 14h.01M9 14h.01M12.5 14h5"/></symbol>
+  <symbol id="i-wand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 21 12-12M14 4l1 2.5L17.5 8 15 9 14 11.5 13 9l-2.5-1L13 6.5zM19 3l.6 1.4L21 5l-1.4.6L19 7l-.6-1.4L17 5l1.4-.6z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2.8 8 4.2v10L12 21.2 4 17V7z"/><path d="m4 7 8 4.2L20 7M12 11.2V21"/></symbol>
+  <symbol id="i-net" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.8 9.6.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10.2 10.2 0 0 0 22 12.2C22 6.6 17.5 2 12 2z"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.7c0-2.4 1.9-3.5 2-3.6-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.9-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 3 2.3 1.2 0 1.6-.8 3.1-.8s1.9.8 3.1.8c1.3 0 2.1-1.1 2.9-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.9-1.1-2.9-3.5zM14.2 5.8c.6-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.6 2.8-1.4z"/></symbol>
+  <symbol id="i-win" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.6l8-1.1v7.1H3zM12 4.4l9-1.3v8.5h-9zM3 12.6h8v7.1l-8-1.1zM12 12.6h9v8.5l-9-1.3z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.9 18.2A2 2 0 0 0 3.6 21h16.8a2 2 0 0 0 1.7-2.8L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4.5M12 17v.01"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2.8h7l5 5V21H6z"/><path d="M13 2.8V8h5M9 12h6M9 15.5h6M9 19h3.5"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M21 3l-9 9M19 14v5.5A1.5 1.5 0 0 1 17.5 21h-13A1.5 1.5 0 0 1 3 19.5v-13A1.5 1.5 0 0 1 4.5 5H10"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="字在首页">
+      <img src="assets/img/logo.png" alt="" width="34" height="34">
+      <span class="brand-name">字在 <small>zzai</small></span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="index.html#features">功能</a>
+      <a href="models.html">模型</a>
+      <a href="download.html">下载</a>
+      <a href="docs.html">使用说明</a>
+      <a href="changelog.html">更新</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-gh" href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener" aria-label="GitHub 仓库">
+        <svg><use href="#i-github"/></svg><span>GitHub</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="download.html">下载</a>
+      <button class="nav-toggle" aria-label="展开菜单" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu">
+  <a href="index.html#features">功能</a>
+  <a href="models.html">模型</a>
+  <a href="download.html">下载</a>
+  <a href="docs.html">使用说明</a>
+  <a href="changelog.html">更新</a>
+  <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+
+<main id="main">
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="grid-floor"></div>
+      <div class="orb orb-1" data-orb="0.02"></div>
+      <div class="orb orb-2" data-orb="-0.03"></div>
+      <div class="orb orb-3" data-orb="0.015"></div>
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+    </div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="status-pill">
+          <span class="dot"></span> 本地 AI 语音输入法
+          <span class="sep"></span>
+          v0.8.1
+        </div>
+        <h1>
+          <span class="line"><span>字在本地，</span></span>
+          <span class="line"><span><em>才叫自在。</em></span></span>
+        </h1>
+        <p class="hero-sub">
+          按住右 Option 说一句，松手，文字就落在光标处。
+          <strong>识别全程在本机完成</strong>——音频不上传，断网也能用。
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="download.html">
+            <svg><use href="#i-dl"/></svg> 下载字在
+          </a>
+          <a class="btn btn-ghost" href="#how">
+            看它怎么工作 <svg><use href="#i-arrow"/></svg>
+          </a>
+        </div>
+        <div class="hero-meta">
+          <span><svg><use href="#i-apple"/></svg> macOS 13+ · Apple Silicon</span>
+          <span><svg><use href="#i-win"/></svg> Windows 10/11 x64</span>
+          <span><svg><use href="#i-box"/></svg> 免费开源</span>
+        </div>
+      </div>
+
+      <div class="stage-wrap">
+        <div class="stage" data-demo data-state="idle" aria-label="字在输入演示">
+          <div class="stage-bar">
+            <div class="tl"><i></i><i></i><i></i></div>
+            <span class="stage-title">会议纪要.md — 备忘录</span>
+            <span class="stage-badge">LOCAL ASR</span>
+          </div>
+          <div class="stage-body">
+            <div class="doc">
+              <div class="doc-h">今天的会议</div>
+              <p class="dim">① 评审时间改到周三下午。</p>
+              <p class="dim">② 设计稿周五前发到群里。</p>
+              <p>③ <span class="insert"></span><span class="caret"></span></p>
+            </div>
+            <div class="capsule">
+              <div class="cap-top">
+                <span class="cap-state"><span class="dot"></span><span>按住说话</span></span>
+                <span class="spacer"></span>
+                <span class="cap-privacy"><svg><use href="#i-shield"/></svg> 音频不出本机</span>
+              </div>
+              <div class="cap-line">
+                <div class="wavebox"><canvas aria-hidden="true"></canvas></div>
+                <div class="cap-text"></div>
+              </div>
+              <div class="cap-hint">
+                <span>松开上屏 · Esc 取消</span>
+                <span><kbd>右 Option</kbd></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="float-chip chip-a"><svg><use href="#i-shield"/></svg> 本机识别 · 音频不上传</div>
+        <div class="float-chip chip-b"><svg><use href="#i-zap"/></svg> p50 <b>402ms</b> 松手→出字</div>
+        <div class="float-chip chip-c"><svg><use href="#i-clock"/></svg> 最长 <b>120s</b> 一次说完</div>
+      </div>
+    </div>
+    <div class="wrap" style="margin-top:22px">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px">
+        <button class="try-btn" type="button" style="margin-top:0">
+          <svg><use href="#i-mic"/></svg> 按住试一下
+        </button>
+        <span class="try-note">页面内演示，不会开启麦克风；真实产品同样按住即说。</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="trust" data-reveal>
+      <div class="trust-item">
+        <div class="k"><svg><use href="#i-shield"/></svg> 音频不出本机</div>
+        <div class="v">识别、降噪、标点全部本地运行，没有音频上传通道。</div>
+      </div>
+      <div class="trust-item">
+        <div class="k"><svg><use href="#i-cpu"/></svg> 双引擎可选</div>
+        <div class="v">SenseVoice 默认够快，Qwen3 短句更准，按场景切换。</div>
+      </div>
+      <div class="trust-item">
+        <div class="k"><svg><use href="#i-clock"/></svg> 一次 2 分钟</div>
+        <div class="v">长听写会话最长 120 秒，单段 30 秒自动切分。</div>
+      </div>
+      <div class="trust-item">
+        <div class="k"><svg><use href="#i-github"/></svg> 开源可查</div>
+        <div class="v">核心与客户端源码公开，模型来自 sherpa-onnx 上游。</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-reveal>How it works</div>
+          <h2 class="h2" data-reveal>一句话的旅程，<br>全部在你电脑里。</h2>
+        </div>
+        <p class="lede" data-reveal>没有账号，没有云端队列。按下、说话、松手，三个动作，一条本地流水线。</p>
+      </div>
+      <div class="steps">
+        <article class="step" data-reveal>
+          <div class="num"><svg><use href="#i-mic"/></svg></div>
+          <h3>按住，说一句</h3>
+          <p>默认右 Option（Windows 为右 Alt），也可以在设置里换成顺手的键。按下不足 400ms 会当作误触丢弃。</p>
+          <div class="step-visual"><span>KEYDOWN</span><span class="bar"><i style="--w:18%"></i></span><span>0.4s</span></div>
+        </article>
+        <article class="step" data-reveal data-reveal-delay="1">
+          <div class="num"><svg><use href="#i-wave"/></svg></div>
+          <h3>本机边听边识别</h3>
+          <p>降噪、VAD、语音识别都在本机跑。准流式预览每 900ms 刷新一次，你能看着字一个个出来。</p>
+          <div class="step-visual"><span>ASR</span><span class="bar"><i style="--w:100%"></i></span><span>900ms × n</span></div>
+        </article>
+        <article class="step" data-reveal data-reveal-delay="2">
+          <div class="num"><svg><use href="#i-text"/></svg></div>
+          <h3>松手，落在光标处</h3>
+          <p>文字进入当前输入框，粘贴或逐字上屏可选。Esc 随时取消，双击热键取回上一次听写。</p>
+          <div class="step-visual"><span>ON SCREEN</span><span class="bar"><i style="--w:72%"></i></span><span>p50 402ms</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features" style="padding-top:20px">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-reveal>Features</div>
+          <h2 class="h2" data-reveal>不是「语音转文字」，<br>是把说话变成生产工具。</h2>
+        </div>
+        <p class="lede" data-reveal>听写只是入口。热词、改写、声纹、上屏方式，都是为「说完就能用」准备的。</p>
+      </div>
+
+      <div class="bento">
+        <article class="b span-7" data-reveal>
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-shield"/></svg> Local first</div>
+          <h3>本机识别，没有上传这一步</h3>
+          <p>音频进入麦克风后，只在本机内存里流转：降噪 → VAD → 识别 → 标点 → 上屏。产品里不存在「把录音发给服务器」的路径。</p>
+          <div class="flow">
+            <span class="node"><svg><use href="#i-mic"/></svg>麦克风</span>
+            <span class="ln"></span>
+            <span class="node"><svg><use href="#i-cpu"/></svg>本机推理</span>
+            <span class="ln"></span>
+            <span class="node"><svg><use href="#i-text"/></svg>光标处</span>
+          </div>
+        </article>
+
+        <article class="b span-5" data-reveal data-reveal-delay="1">
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-zap"/></svg> Two engines</div>
+          <h3>快，还是准，你来定</h3>
+          <p>日常听写用 SenseVoice，够快；正式内容切到 Qwen3，短句更准，代价是慢一些。</p>
+          <div class="seg"><span class="on">SenseVoice</span><span>Qwen3</span></div>
+          <div class="engine-note">CER 0.093 / 0.040 · 25 条 TTS 语料 · Qwen3 约慢 3 倍</div>
+        </article>
+
+        <article class="b span-5" data-reveal>
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-clock"/></svg> Long form</div>
+          <h3>一次说满两分钟</h3>
+          <p>长听写会话最长 120 秒，单段不超过 30 秒，自动接续，不会说到一半被切断。</p>
+          <div class="timeline">
+            <div class="tl-track"><i></i></div>
+            <div class="tl-marks"><span>0:00</span><span>0:30</span><span>1:00</span><span>1:30</span><span>2:00</span></div>
+          </div>
+        </article>
+
+        <article class="b span-7" data-reveal data-reveal-delay="1">
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-wand"/></svg> Vocabulary</div>
+          <h3>你的名字，它听一次就记住</h3>
+          <p>热词自学习：只填你「想听到」的词，产品名、同事名、内部黑话，不必逐条纠错。</p>
+          <div class="chips-row">
+            <span class="chip v">字在</span><span class="chip">DeepSeek</span><span class="chip">HarmonyOS</span>
+            <span class="chip">飞书</span><span class="chip v">Qwen3</span><span class="chip">评审</span>
+            <span class="chip">灰度</span><span class="chip v">sherpa-onnx</span>
+          </div>
+        </article>
+
+        <article class="b span-4" data-reveal>
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-spark"/></svg> Rewrite</div>
+          <h3>选中，再改一版</h3>
+          <p>⌘E 唤起五种改写：润色、正式、精炼、英文、总结。原文留在原地，改完替换。</p>
+          <div class="sel-box">
+            这个方案<mark>我觉得还行</mark>，要不先这样？
+            <div class="sel-menu"><span>润色</span><span>正式</span><span>精炼</span><span>英文</span><span>总结</span></div>
+          </div>
+        </article>
+
+        <article class="b span-4" data-reveal data-reveal-delay="1">
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-lock"/></svg> Privacy</div>
+          <h3>隐私模式：说完就忘</h3>
+          <p>不写历史、不落盘、不在浮层显示正文。适合在会议、客服、医疗场景里使用。</p>
+          <div class="privacy-list">
+            <div><svg><use href="#i-check"/></svg> 不写入历史记录</div>
+            <div><svg><use href="#i-check"/></svg> 不落盘保存音频</div>
+            <div><svg><use href="#i-check"/></svg> 浮层只显示状态</div>
+          </div>
+        </article>
+
+        <article class="b span-4" data-reveal data-reveal-delay="2">
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-voice"/></svg> Voiceprint</div>
+          <h3>只录我的声音</h3>
+          <p>声纹校验在本机完成，模型 39MB。旁边有人说话时，不会把别人的话打进你的文档。</p>
+          <div class="voice-ring"><i></i><i></i><i></i><div class="core"><svg><use href="#i-mic"/></svg></div></div>
+        </article>
+
+        <article class="b span-6" data-reveal>
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-text"/></svg> Delivery</div>
+          <h3>上屏方式，按 App 来定</h3>
+          <p>粘贴快，逐字稳。终端、远程桌面、游戏输入框各有脾气，可以给单个 App 指定上屏策略。</p>
+          <div class="flow" style="margin-top:20px">
+            <span class="node">粘贴</span><span class="ln"></span><span class="node">逐字</span>
+          </div>
+        </article>
+
+        <article class="b span-6" data-reveal data-reveal-delay="1">
+          <div class="kicker"><svg style="width:13px;height:13px"><use href="#i-net"/></svg> LAN dictation</div>
+          <h3>手机说话，电脑出字</h3>
+          <p>实验功能：局域网听写接口默认关闭，开启后监听 127.0.0.1:8765，需要 token。改完配置需重启。</p>
+          <div class="flow" style="margin-top:20px">
+            <span class="node">手机浏览器</span><span class="ln"></span><span class="node">本机 8765</span><span class="ln"></span><span class="node">当前输入框</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="numbers" data-reveal>
+        <div class="num-item">
+          <div class="num-val"><span data-count="402">0</span><small>ms</small></div>
+          <div class="num-label">松手到出字 p50</div>
+          <div class="num-note">p95 629ms · 引擎侧 · M5 / 17GB · 25 条 TTS 语料</div>
+        </div>
+        <div class="num-item">
+          <div class="num-val"><span data-count="120">0</span><small>s</small></div>
+          <div class="num-label">单次最长听写</div>
+          <div class="num-note">单段 ≤30 秒自动切分，最多 120 秒</div>
+        </div>
+        <div class="num-item">
+          <div class="num-val"><span data-count="233">0</span><small>MB</small></div>
+          <div class="num-label">默认识别模型</div>
+          <div class="num-note">SenseVoice int8 · 解包 247MB · 首次下载</div>
+        </div>
+        <div class="num-item">
+          <div class="num-val"><span data-count="0">0</span><small>次上传</small></div>
+          <div class="num-label">识别链路中的音频上传</div>
+          <div class="num-note">下载模型、可选润色、可选诊断是另外的出口</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="inplace">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-reveal>Where it lives</div>
+          <h2 class="h2" data-reveal>它就在光标旁边。</h2>
+        </div>
+        <p class="lede" data-reveal>一个不抢焦点的浮层，出现在你正在写的地方。说完，浮层消失，文字留下。</p>
+      </div>
+      <div class="shot-frame" data-reveal>
+        <img src="assets/img/overlay-win-capsule.jpg" alt="字在在 Windows 上的听写浮层：深色胶囊显示识别结果，覆盖在桌面应用之上" width="1140" height="270" loading="lazy">
+        <div class="shot-cap">
+          <span><b>Windows 浮层实拍</b> · 真实产品界面，未做视觉修饰</span>
+          <span>v0.8.1 · 界面可能随版本微调</span>
+        </div>
+      </div>
+      <div class="steps" style="margin-top:18px">
+        <article class="step" data-reveal>
+          <div class="num"><svg><use href="#i-mic"/></svg></div>
+          <h3>不打断你的手</h3>
+          <p>浮层不抢焦点，按住热键就能说，松手文字直接进当前输入框。</p>
+        </article>
+        <article class="step" data-reveal data-reveal-delay="1">
+          <div class="num"><svg><use href="#i-wave"/></svg></div>
+          <h3>边说边看见</h3>
+          <p>准流式预览让确认和纠错发生在说完之前，而不是之后。</p>
+        </article>
+        <article class="step" data-reveal data-reveal-delay="2">
+          <div class="num"><svg><use href="#i-alert"/></svg></div>
+          <h3>Esc 就是后悔药</h3>
+          <p>说错了按 Esc，文字不会上屏；双击热键还能取回上一次结果。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="models-preview">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-reveal>Models</div>
+          <h2 class="h2" data-reveal>模型在你手里，<br>下载地址也公开。</h2>
+        </div>
+        <a class="text-link" href="models.html" data-reveal>查看全部模型与镜像 <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="table-wrap" data-reveal>
+        <table class="model">
+          <thead>
+            <tr><th>模型</th><th>用途</th><th>下载</th><th>解包</th><th>来源</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SenseVoice int8 <span class="tag">默认</span></td>
+              <td>中英混合语音识别</td>
+              <td class="mono">233 MB</td><td class="mono">247 MB</td>
+              <td class="mono">sherpa-onnx</td>
+            </tr>
+            <tr>
+              <td>Qwen3-ASR int8</td>
+              <td>短句高精度识别（≤30s）</td>
+              <td class="mono">879 MB</td><td class="mono">972 MB</td>
+              <td class="mono">sherpa-onnx</td>
+            </tr>
+            <tr>
+              <td>标点模型</td>
+              <td>自动加标点</td>
+              <td class="mono">65 MB</td><td class="mono">65 MB</td>
+              <td class="mono">sherpa-onnx</td>
+            </tr>
+            <tr>
+              <td>声纹模型</td>
+              <td>只录我的声音</td>
+              <td class="mono">39 MB</td><td class="mono">39 MB</td>
+              <td class="mono">sherpa-onnx</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:14px;color:#6f758c;font-size:12.5px">
+        模型全部来自 <a class="text-link" style="display:inline;color:#a9aec4" href="https://github.com/k2-fsa/sherpa-onnx/releases" target="_blank" rel="noopener">k2-fsa/sherpa-onnx</a> 上游发布；字在只做下载与校验，不改模型权重。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="download">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-reveal>Download</div>
+          <h2 class="h2" data-reveal>现在就可以装。</h2>
+        </div>
+        <p class="lede" data-reveal>免费、无账号。首次启动会引导下载模型；Windows 安装包已随包附带 SenseVoice。</p>
+      </div>
+      <div class="dl-grid">
+        <article class="dl-card primary" data-reveal>
+          <div class="dl-os">
+            <svg><use href="#i-apple"/></svg>
+            <h3>macOS</h3>
+            <span class="ver">v0.8.1 · arm64</span>
+          </div>
+          <div class="dl-meta">
+            <span><svg><use href="#i-dl"/></svg> 9.4 MB · 不含模型</span>
+            <span><svg><use href="#i-cpu"/></svg> Apple Silicon</span>
+            <span><svg><use href="#i-box"/></svg> macOS 13+</span>
+          </div>
+          <p style="color:#8b90a6;font-size:13px;line-height:1.75">
+            首次启动需下载约 235MB 模型（SenseVoice + 标点 + 降噪）。安装包未公证，首次打开需在「系统设置 → 隐私与安全性」里点「仍要打开」。
+          </p>
+          <div style="margin-top:20px">
+            <a class="btn btn-primary btn-block" href="/dl/zzai-0.8.1-mac-arm64.zip" download>
+              <svg><use href="#i-dl"/></svg> 下载 macOS 版
+            </a>
+          </div>
+          <div class="sha"><code id="sha-mac">0e4bc9fd1ef8e2ae1fb3b4836c4acbc614cd8cdf505edd2fa8a1f20b942a1f43</code><button type="button" data-copy="sha-mac">复制</button></div>
+        </article>
+
+        <article class="dl-card" data-reveal data-reveal-delay="1">
+          <div class="dl-os">
+            <svg><use href="#i-win"/></svg>
+            <h3>Windows</h3>
+            <span class="ver">v0.8.1 · x64</span>
+          </div>
+          <div class="dl-meta">
+            <span><svg><use href="#i-dl"/></svg> 161 MB · 含模型</span>
+            <span><svg><use href="#i-cpu"/></svg> x64</span>
+            <span><svg><use href="#i-box"/></svg> Windows 10/11</span>
+          </div>
+          <p style="color:#8b90a6;font-size:13px;line-height:1.75">
+            随包附带 SenseVoice 与运行库，装完即可离线使用。安装包未签名，SmartScreen 可能提示「更多信息 → 仍要运行」。
+          </p>
+          <div style="margin-top:20px">
+            <a class="btn btn-ghost btn-block" href="/dl/zzai-0.8.1-win64.zip" download>
+              <svg><use href="#i-dl"/></svg> 下载 Windows 版
+            </a>
+          </div>
+          <div class="sha"><code id="sha-win">fed58b67908cc3a7b78be54dfb51cf244c3a278d0e2412c6a9e25819bcd21a44</code><button type="button" data-copy="sha-win">复制</button></div>
+        </article>
+      </div>
+      <p style="margin-top:16px;color:#6f758c;font-size:12.5px">
+        校验方式：<code style="color:#a9aec4">shasum -a 256 文件名</code>（macOS）或 <code style="color:#a9aec4">certutil -hashfile 文件名 SHA256</code>（Windows）。
+        也可以从 <a class="text-link" style="display:inline" href="https://github.com/flyeasy/zzai/releases" target="_blank" rel="noopener">GitHub Release</a> 下载同样的安装包。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow" data-reveal>FAQ</div>
+          <h2 class="h2" data-reveal>先回答你可能担心的。</h2>
+        </div>
+      </div>
+      <div class="faq" data-reveal>
+        <details>
+          <summary><span class="q">01</span> 真的完全离线吗？<span class="ic"></span></summary>
+          <div class="a">
+            <p><strong>识别是离线的。</strong>音频从麦克风进来后只在本机处理，产品里没有上传音频的通道。</p>
+            <p>但「离线」不等于「永不上网」：首次使用要下载模型；可选的 LLM 润色会把文字发到你配置的服务端（默认关闭）；可选的诊断上传会发脱敏日志（默认关闭，不含正文）。除此之外没有遥测。</p>
+          </div>
+        </details>
+        <details>
+          <summary><span class="q">02</span> 支持 Intel Mac 或 macOS 12 吗？<span class="ic"></span></summary>
+          <div class="a"><p>暂不支持。当前 macOS 版只提供 <strong>Apple Silicon（arm64）</strong>构建，要求 macOS 13 及以上。Intel 机器可以关注后续版本或从源码自行构建。</p></div>
+        </details>
+        <details>
+          <summary><span class="q">03</span> 打开时提示「无法验证开发者」怎么办？<span class="ic"></span></summary>
+          <div class="a"><p>安装包没有做 Apple 公证，这是预期行为。到「系统设置 → 隐私与安全性」，在页面下方点「仍要打开」，再确认一次即可。Windows 上对应的是 SmartScreen 的「更多信息 → 仍要运行」。</p></div>
+        </details>
+        <details>
+          <summary><span class="q">04</span> 我的语音会被上传或用于训练吗？<span class="ic"></span></summary>
+          <div class="a"><p>不会。音频只在本机内存中流转，不落盘、不上传。开启可选的 LLM 润色时，发送的是<strong>识别后的文字</strong>和你配置的服务端地址，音频仍然不出本机。诊断包默认不含正文。</p></div>
+        </details>
+        <details>
+          <summary><span class="q">05</span> 一次能说多久？<span class="ic"></span></summary>
+          <div class="a"><p>单个听写会话最长 <strong>120 秒</strong>，内部按 ≤30 秒切段自动接续。Qwen3 精度档只适合短句，超过 30 秒请用 SenseVoice。</p></div>
+        </details>
+        <details>
+          <summary><span class="q">06</span> 收费吗？模型需要另外买吗？<span class="ic"></span></summary>
+          <div class="a"><p>完全免费，源码开源。模型来自 sherpa-onnx 上游发布，不需要额外授权费用；体积从 0.5MB 到 879MB 不等，按需下载。</p></div>
+        </details>
+        <details>
+          <summary><span class="q">07</span> 和系统自带听写有什么不同？<span class="ic"></span></summary>
+          <div class="a"><p>系统听写更通用；字在把几件具体的事做深：长听写 120 秒、热词自学习、选区改写、按 App 选择上屏方式、声纹只收自己的声音，以及可自行核对的本地识别链路。它不替代系统听写，适合每天要写很多字的人。</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="cta" data-reveal>
+        <h2>说一句，<span class="grad-text">字就在。</span></h2>
+        <p>下载、按住、松手。第一次使用大约需要三分钟，包括下载模型。</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="download.html"><svg><use href="#i-dl"/></svg> 下载字在 v0.8.1</a>
+          <a class="btn btn-ghost" href="docs.html"><svg><use href="#i-doc"/></svg> 看使用说明</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="34" height="34">
+          <span class="brand-name">字在 <small>zzai</small></span>
+        </a>
+        <p>本地优先的 AI 语音输入法。按住说一句，松手文字就在光标处，音频不出本机。</p>
+      </div>
+      <div class="foot-col">
+        <h4>产品</h4>
+        <a href="index.html#features">功能</a>
+        <a href="models.html">模型库</a>
+        <a href="download.html">下载</a>
+        <a href="changelog.html">更新日志</a>
+      </div>
+      <div class="foot-col">
+        <h4>资源</h4>
+        <a href="docs.html">使用说明</a>
+        <a href="privacy.html">隐私说明</a>
+        <a href="index.html#faq">常见问题</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="https://github.com/flyeasy/zzai/blob/main/LICENSE" target="_blank" rel="noopener">开源许可 ↗</a>
+        <a href="https://github.com/flyeasy/zzai/issues" target="_blank" rel="noopener">问题反馈 ↗</a>
+        <a href="https://github.com/k2-fsa/sherpa-onnx/releases" target="_blank" rel="noopener">模型上游 ↗</a>
+      </div>
+    </div>
+    <div class="wordmark" aria-hidden="true">字在</div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> 字在 zzai · 免费开源 · 为 macOS 与 Windows 打造</span>
+      <span class="links">
+        <a href="privacy.html">隐私</a>
+        <a href="docs.html">文档</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>

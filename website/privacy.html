@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>隐私说明 — 字在 zzai</title>
+<meta name="description" content="字在的隐私边界：识别链路的音频只在本机处理；只有模型下载、可选润色、可选诊断三个网络出口；无遥测、无账号。">
+<meta name="theme-color" content="#05060a">
+<link rel="canonical" href="https://zzai.harmonyos.fun/privacy.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字在隐私说明">
+<meta property="og:description" content="音频不出本机。三个网络出口，逐条写清楚。">
+<meta property="og:url" content="https://zzai.harmonyos.fun/privacy.html">
+<meta property="og:image" content="https://zzai.harmonyos.fun/assets/img/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<script src="assets/js/boot.js"></script>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="字在首页">
+      <img src="assets/img/logo.png" alt="" width="34" height="34">
+      <span class="brand-name">字在 <small>zzai</small></span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="index.html#features">功能</a>
+      <a href="models.html">模型</a>
+      <a href="download.html">下载</a>
+      <a href="docs.html">使用说明</a>
+      <a href="changelog.html">更新</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-gh" href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener" aria-label="GitHub 仓库">
+        <svg><use href="assets/img/icons.svg#i-github"/></svg><span>GitHub</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="download.html">下载</a>
+      <button class="nav-toggle" aria-label="展开菜单" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu">
+  <a href="index.html#features">功能</a>
+  <a href="models.html">模型</a>
+  <a href="download.html">下载</a>
+  <a href="docs.html">使用说明</a>
+  <a href="changelog.html">更新</a>
+  <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">首页</a> / 隐私说明</div>
+      <h1>隐私说明</h1>
+      <p>一句话：识别链路的音频只在本机处理。下面把「什么会离开这台电脑」逐条写清楚。</p>
+      <div class="hero-meta" style="margin-top:24px">
+        <span>适用 v0.8.1</span><span>·</span><span>更新于 2026-11-22</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="prose">
+        <h2>音频不出本机</h2>
+        <p>从麦克风采集、降噪、VAD 分段、声纹比对到语音识别，全部在你的电脑上完成。字在不保存原始录音，不上传音频，也不把音频写进日志。历史上只保存识别出来的文字。</p>
+        <p>要做到这一点，第一次使用需要下载模型（约 235MB 起）。这是下载，不是上传。</p>
+
+        <h2>三个网络出口</h2>
+        <p>应用里所有会联网的代码路径只有这三处：</p>
+        <h3>1. 模型下载</h3>
+        <p>默认从本站镜像 <code>officeace.harmonyos.fun/eryu-models</code> 拉取，镜像不可达时回退到 GitHub Releases。请求里只有文件名，不包含你的音频、文字或设备标识。</p>
+        <h3>2. LLM 润色（默认关闭）</h3>
+        <p>只有你主动开启并配置了 OpenAI 兼容的地址与 Key 才会发生。发送内容是你这次识别出来的<strong>文字</strong>和必要的指令，接收方是你自己填的那个服务端。字在不经手、不中转、不记录。</p>
+        <h3>3. 诊断上传（默认关闭）</h3>
+        <p>只有你在设置里点「上传诊断」才会发生。内容包括版本、系统版本、模型清单、最近的错误码与延迟统计；诊断包会脱敏，不包含识别正文、音频、剪贴板内容或历史记录。</p>
+
+        <h2>不存在的东西</h2>
+        <ul>
+          <li>没有账号系统，不需要注册或登录。</li>
+          <li>没有遥测、埋点、崩溃自动上报或使用统计。</li>
+          <li>没有广告 SDK、第三方分析 SDK。</li>
+          <li>官网不使用 Cookie、不做访问画像；字体与图标随站点一起提供，不请求第三方 CDN。</li>
+        </ul>
+
+        <h2>本机保存了什么</h2>
+        <table class="kv">
+          <dl><dt>配置</dt><dd><code>config.toml</code>：热键、引擎、开关、镜像地址等。</dd></dl>
+          <dl><dt>模型</dt><dd>下载的 ONNX 文件，位于模型目录。</dd></dl>
+          <dl><dt>历史</dt><dd>最多 200 条识别结果与延迟，可在设置里清空。</dd></dl>
+          <dl><dt>统计</dt><dd>条数与 p50 / p95 延迟，不含文本。</dd></dl>
+          <dl><dt>声纹</dt><dd>只有你启用「只识别我的声音」时才生成，保存在本机。</dd></dl>
+        </table>
+        <p>macOS 位于 <code>~/.eryu/</code>，Windows 位于 <code>%APPDATA%\Eryu\</code>。卸载应用不会自动删除这些文件，需要你手动清理。</p>
+
+        <h2>系统权限为什么需要</h2>
+        <ul>
+          <li><strong>麦克风</strong>：收音，这是产品本身。</li>
+          <li><strong>辅助功能</strong>：把文字送进当前输入框、监听热键。</li>
+          <li><strong>输入监控</strong>：键盘事件与合成粘贴在部分应用里需要它。</li>
+        </ul>
+        <p>三项都只服务于「听写并上屏」，不用于采集其他信息。</p>
+
+        <h2>第三方组件</h2>
+        <p>推理用 sherpa-onnx（ONNX Runtime），模型来自 k2-fsa 的上游发布。各组件的版权与许可见仓库里的 <a href="https://github.com/flyeasy/zzai/blob/main/THIRD_PARTY.md" target="_blank" rel="noopener">THIRD_PARTY.md ↗</a>。应用本身以 Apache-2.0 开源。</p>
+
+        <h2>你可以自己验证</h2>
+        <p>源码全部公开：<a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">github.com/flyeasy/zzai ↗</a>。网络请求的位置在 <code>core/src/models.rs</code>（模型下载）、润色客户端与诊断上传处，搜索 <code>http</code> 即可逐一核对。</p>
+
+        <h2>变更与联系</h2>
+        <p>这份说明随版本更新；有实质变化会在<a href="changelog.html">更新日志</a>里注明。问题、疑问或安全报告请开 <a href="https://github.com/flyeasy/zzai/issues" target="_blank" rel="noopener">GitHub Issue ↗</a>。</p>
+
+        <div class="callout" style="margin-top:40px">
+          <svg><use href="assets/img/icons.svg#i-info"/></svg>
+          <div>这是产品说明，不是法律意见。若你所在地区对语音数据处理有额外要求，请以当地法规为准。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="34" height="34">
+          <span class="brand-name">字在 <small>zzai</small></span>
+        </a>
+        <p>本地优先的 AI 语音输入法。按住说一句，松手文字就在光标处，音频不出本机。</p>
+      </div>
+      <div class="foot-col">
+        <h4>产品</h4>
+        <a href="index.html#features">功能</a>
+        <a href="models.html">模型库</a>
+        <a href="download.html">下载</a>
+        <a href="changelog.html">更新日志</a>
+      </div>
+      <div class="foot-col">
+        <h4>资源</h4>
+        <a href="docs.html">使用说明</a>
+        <a href="privacy.html">隐私说明</a>
+        <a href="index.html#faq">常见问题</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="https://github.com/flyeasy/zzai/blob/main/LICENSE" target="_blank" rel="noopener">开源许可 ↗</a>
+        <a href="https://github.com/flyeasy/zzai/issues" target="_blank" rel="noopener">问题反馈 ↗</a>
+        <a href="https://github.com/k2-fsa/sherpa-onnx/releases" target="_blank" rel="noopener">模型上游 ↗</a>
+      </div>
+    </div>
+    <div class="wordmark" aria-hidden="true">字在</div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> 字在 zzai · 免费开源 · 为 macOS 与 Windows 打造</span>
+      <span class="links">
+        <a href="privacy.html">隐私</a>
+        <a href="docs.html">文档</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>

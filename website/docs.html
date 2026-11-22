@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使用说明 — 字在 zzai</title>
+<meta name="description" content="字在的完整使用说明：安装与权限、浮层状态、快捷键、长听写、双引擎、热词、上屏方式、隐私模式、声纹、润色、局域网听写与排障。">
+<meta name="theme-color" content="#05060a">
+<link rel="canonical" href="https://zzai.harmonyos.fun/docs.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字在使用说明">
+<meta property="og:description" content="从第一次听写到热词、改写、局域网接口，一页看完。">
+<meta property="og:url" content="https://zzai.harmonyos.fun/docs.html">
+<meta property="og:image" content="https://zzai.harmonyos.fun/assets/img/og.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<script src="assets/js/boot.js"></script>
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要内容</a>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="字在首页">
+      <img src="assets/img/logo.png" alt="" width="34" height="34">
+      <span class="brand-name">字在 <small>zzai</small></span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="index.html#features">功能</a>
+      <a href="models.html">模型</a>
+      <a href="download.html">下载</a>
+      <a href="docs.html" aria-current="page">使用说明</a>
+      <a href="changelog.html">更新</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-gh" href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener" aria-label="GitHub 仓库">
+        <svg><use href="assets/img/icons.svg#i-github"/></svg><span>GitHub</span>
+      </a>
+      <a class="btn btn-primary btn-sm" href="download.html">下载</a>
+      <button class="nav-toggle" aria-label="展开菜单" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu">
+  <a href="index.html#features">功能</a>
+  <a href="models.html">模型</a>
+  <a href="download.html">下载</a>
+  <a href="docs.html">使用说明</a>
+  <a href="changelog.html">更新</a>
+  <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">首页</a> / 使用说明</div>
+      <h1>使用说明</h1>
+      <p>从第一次按下热键，到热词、改写、局域网接口。按顺序读，或者直接跳到你要找的那一节。</p>
+      <div class="hero-meta" style="margin-top:24px">
+        <span>适用 v0.8.1</span><span>·</span><span>macOS 13+ Apple Silicon</span><span>·</span><span>Windows 10/11 x64</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap docs-layout">
+    <aside class="docs-nav" aria-label="文档目录">
+      <h4>目录</h4>
+      <a href="#start">五分钟上手</a>
+      <a href="#install">安装与权限</a>
+      <a href="#overlay">浮层与状态</a>
+      <a href="#shortcuts">快捷键</a>
+      <a href="#longform">长听写</a>
+      <a href="#engines">引擎与模型</a>
+      <a href="#hotwords">热词</a>
+      <a href="#delivery">上屏方式</a>
+      <a href="#privacy">隐私模式</a>
+      <a href="#voice">声纹与音源锁定</a>
+      <a href="#polish">润色与改写</a>
+      <a href="#lan">局域网听写</a>
+      <a href="#trouble">排障</a>
+      <a href="#data">数据与卸载</a>
+      <a href="#cli">命令行自测</a>
+    </aside>
+
+    <div class="docs-body">
+      <section class="docs-section" id="start">
+        <h2>五分钟上手</h2>
+        <p>如果你已经装好并授权，只需要记住三件事：</p>
+        <ol>
+          <li><strong>按住</strong>右 Option（Windows 为右 Alt），浮层出现「在听…」和电平条。</li>
+          <li><strong>说话</strong>，准流式文字每 900ms 刷新一次，但此时还没上屏。</li>
+          <li><strong>松开</strong>，文字进入当前输入框；按 Esc 可以取消。</li>
+        </ol>
+        <p>说错了但已经上屏：用系统的 ⌘Z / Ctrl+Z 撤销。双击热键可以取回上一次听写结果，不用重说。</p>
+        <div class="callout ok">
+          <svg><use href="assets/img/icons.svg#i-check"/></svg>
+          <div>第一次使用建议先打开「设置 → 音频 → 测试 3 秒」，确认电平条会动，再去任何输入框里试。</div>
+        </div>
+      </section>
+
+      <section class="docs-section" id="install">
+        <h2>安装与权限</h2>
+        <p>安装包与校验值在<a href="download.html">下载页</a>。两个平台都没有代码签名，首次打开会被系统拦一次，这是预期行为。</p>
+        <h3>macOS 的三项权限</h3>
+        <table>
+          <thead><tr><th>权限</th><th>位置</th><th>不给会怎样</th></tr></thead>
+          <tbody>
+            <tr><td>麦克风</td><td>系统设置 → 隐私与安全性 → 麦克风</td><td>收不到声音</td></tr>
+            <tr><td>辅助功能</td><td>系统设置 → 隐私与安全性 → 辅助功能</td><td>没法粘贴上屏，单键热键不响应</td></tr>
+            <tr><td>输入监控</td><td>系统设置 → 隐私与安全性 → 输入监控</td><td>键盘监听或合成 ⌘V 可能失败</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn">
+          <svg><use href="assets/img/icons.svg#i-alert"/></svg>
+          <div><strong>权限是按 app 文件路径记的。</strong>给「应用程序」里的副本授过权，再启动项目目录里的另一份副本，系统仍然认为没授权。只保留一个可运行副本，并先移动、再授权。</div>
+        </div>
+        <p>从终端直接运行二进制会继承终端的授权，权限读数可能是假阳性。判断权限是否真的生效，请以双击启动的副本为准，或看菜单栏「权限状态…」。</p>
+        <h3>Windows</h3>
+        <p>解压后双击 <code>install-win.bat</code> 建快捷方式；首次启动会走五步引导。设置页支持 Tab / Shift+Tab 移动焦点、Ctrl+Tab 翻页、Esc 关闭。</p>
+      </section>
+
+      <section class="docs-section" id="overlay">
+        <h2>浮层与状态</h2>
+        <p>浮层不抢焦点，只显示在屏幕底部。它的状态很直接：</p>
+        <ul>
+          <li><strong>在听…</strong>：正在收音，右侧秒数在涨；电平条随音量跳动。</li>
+          <li><strong>识别中…</strong>：你已松手，本机正在收尾。</li>
+          <li><strong>已上屏</strong>：文字已注入当前输入框。</li>
+          <li><strong>太短了 / 声音太小了</strong>：本次丢弃，不会把幻觉文字打进文档。</li>
+        </ul>
+        <p>浮层里出现的准流式文字只是预览，不会自动上屏；真正写进去的是松手后的最终结果。</p>
+      </section>
+
+      <section class="docs-section" id="shortcuts">
+        <h2>快捷键</h2>
+        <table>
+          <thead><tr><th>操作</th><th>macOS</th><th>Windows</th></tr></thead>
+          <tbody>
+            <tr><td>按住听写</td><td><kbd>右 Option</kbd>（可改）</td><td><kbd>右 Alt</kbd>（可改）</td></tr>
+            <tr><td>取消本次</td><td><kbd>Esc</kbd> / <kbd>⌘.</kbd></td><td><kbd>Esc</kbd></td></tr>
+            <tr><td>取回上次结果</td><td>双击热键</td><td>双击热键</td></tr>
+            <tr><td>选区改写</td><td><kbd>⌘E</kbd></td><td>托盘菜单</td></tr>
+            <tr><td>设置</td><td><kbd>⌘,</kbd></td><td>托盘右键 → 设置</td></tr>
+            <tr><td>统计与历史</td><td><kbd>⌘H</kbd></td><td>托盘右键 → 历史</td></tr>
+            <tr><td>退出并重新打开</td><td><kbd>⌘⇧R</kbd></td><td>托盘右键 → 退出后重启</td></tr>
+          </tbody>
+        </table>
+        <p>润色档位快捷键默认为 <kbd>⌃⌥1</kbd> / <kbd>⌃⌥2</kbd> / <kbd>⌃⌥3</kbd>，可在设置里改。</p>
+      </section>
+
+      <section class="docs-section" id="longform">
+        <h2>长听写</h2>
+        <p>一次听写会话最长 <strong>120 秒</strong>。内部按单段不超过 <strong>30 秒</strong>切分，自动接续，不需要你说到一半停下来重新按。</p>
+        <p>适合口述周报、会议纪要、长段邮件。需要停顿思考时，继续按住即可；VAD 会把过长静音当作分段点。</p>
+        <div class="callout">
+          <svg><use href="assets/img/icons.svg#i-info"/></svg>
+          <div>Qwen3 精度档只适合短句（≤30 秒）。要做 1–2 分钟的长听写，请用 SenseVoice。</div>
+        </div>
+      </section>
+
+      <section class="docs-section" id="engines">
+        <h2>引擎与模型</h2>
+        <p>两个引擎都在本机跑，不联网：</p>
+        <ul>
+          <li><strong>SenseVoice int8（默认）</strong>：233MB 下载 / 247MB 解包。25 条 TTS 金标语料 CER 0.093（中 0.028 / 英 0.125 / 混 0.159）。适合日常与长听写。</li>
+          <li><strong>Qwen3-ASR int8（精度档）</strong>：879MB / 972MB。同语料 CER 0.040，但速度约慢 3 倍，峰值内存约 1.6GB，只建议短句。</li>
+        </ul>
+        <p>设置 → 引擎可以直接点「下载」，完成后一键切换。也可以到<a href="models.html">模型页</a>手动下载后放进模型目录。</p>
+        <p>另外三个小模型：标点 65MB、声纹 39MB、GTCRN 降噪 0.5MB、silero VAD 0.6MB。除 SenseVoice 外的模型都可以不用。</p>
+      </section>
+
+      <section class="docs-section" id="hotwords">
+        <h2>热词</h2>
+        <p>热词是一张「听错的说法 → 正确写法」的表。例如把「深度求索」映射到 <code>DeepSeek</code>，把「通义」映射到 <code>Qwen</code>。</p>
+        <p>两种添加方式：</p>
+        <ul>
+          <li>设置 → 热词，手动增删改，⌘S 保存。</li>
+          <li>上屏后你亲手改了某个词，应用会在约 15 秒内发现这次编辑，把「原词 → 新词」放进「学到的改法」，等你采纳或忽略。</li>
+        </ul>
+        <p>热词页还会从历史里挑高频词作为建议，一键加入。热词表改动后立即生效，不需要重启。</p>
+        <div class="callout">
+          <svg><use href="assets/img/icons.svg#i-info"/></svg>
+          <div>热词只影响识别结果的替换，不会改变模型本身。映射宁少勿多，太短的词容易误伤正常文本。</div>
+        </div>
+      </section>
+
+      <section class="docs-section" id="delivery">
+        <h2>上屏方式</h2>
+        <p>两种策略，默认「粘贴」：</p>
+        <ul>
+          <li><strong>粘贴</strong>：把文字放进剪贴板再合成 ⌘V / Ctrl+V，快，绝大多数 App 可用。</li>
+          <li><strong>逐字打字</strong>：逐个字符注入键盘事件，慢一些，但在终端、远程桌面、游戏输入框里更稳。</li>
+        </ul>
+        <p>设置里可以给单个 App 覆盖策略，例如「终端一律逐字」。密码框会自动拒绝逐字上屏；提权窗口与部分特殊控件无法注入，这是系统限制。</p>
+        <p>如果提示「上屏结果未知」，文字已经保存在内存里，可以从菜单栏「复制上次结果」取回，再手动粘贴。</p>
+      </section>
+
+      <section class="docs-section" id="privacy">
+        <h2>隐私模式</h2>
+        <p>开启后同时做三件事：</p>
+        <ul>
+          <li>不写入历史记录；</li>
+          <li>失败音频不落盘；</li>
+          <li>浮层不显示识别文本，只显示状态。</li>
+        </ul>
+        <p>适合会议、客服、医疗等场景。注意：隐私模式不改变上屏行为，文字仍然会进入你当前的输入框。</p>
+        <p>无论是否开启，识别链路的音频都不会离开本机。产品里只有三个网络出口：模型下载、可选的 LLM 润色、可选的诊断上传。详见<a href="privacy.html">隐私说明</a>。</p>
+      </section>
+
+      <section class="docs-section" id="voice">
+        <h2>声纹与音源锁定</h2>
+        <p><strong>只识别我的声音</strong>：先录 8 秒声纹（本机 39MB 模型），之后只让匹配的声音进入识别。适合多人会议里只想记自己发言。</p>
+        <p><strong>音源锁定（实验）</strong>：按段判断声源，插话多的场景可以更干净；但它按段丢弃，可能误伤你自己的话。旁边人声一直插话、而你想全记下来时，关掉它。</p>
+        <div class="callout warn">
+          <svg><use href="assets/img/icons.svg#i-alert"/></svg>
+          <div>声纹不是安全认证，只是识别前的声源筛选。不要把它当作「防止他人冒用」的安全边界。</div>
+        </div>
+      </section>
+
+      <section class="docs-section" id="polish">
+        <h2>润色与选区改写</h2>
+        <p>润色需要你填一个 OpenAI 兼容的 API 地址与 Key（默认 DeepSeek）。<strong>默认关闭</strong>；开启时应用会提示「这段文字会离开本机」。</p>
+        <ul>
+          <li>润色档位：轻度 / 标准 / 强，快捷键默认 <kbd>⌃⌥1</kbd>–<kbd>⌃⌥3</kbd>。</li>
+          <li>选区改写：选中文字后按 <kbd>⌘E</kbd>，可选润色、正式、精炼、英文、总结五种。结果可就地替换。</li>
+        </ul>
+        <p>发出去的是识别后的<strong>文字</strong>与你配置的服务端地址；音频仍然不出本机。不用时保持关闭即可。</p>
+      </section>
+
+      <section class="docs-section" id="lan">
+        <h2>局域网听写</h2>
+        <p>实验功能，默认关闭。设置 → 音频 →「局域网听写接口（实验）」打开，<strong>改完需要重启应用</strong>。</p>
+        <p>它只做「音频 → 文字」：不上屏、不写历史、不动剪贴板。默认只监听 <code>127.0.0.1:8765</code>；要让手机访问，必须打开「允许局域网」并设置 token。</p>
+        <pre><code># 探活
+curl -s -H "x-eryu-token: 你的token" http://127.0.0.1:8765/health
+
+# 发一段 16kHz 单声道 WAV，取回文字
+curl -s -H "x-eryu-token: 你的token" \
+  --data-binary @speech.wav \
+  http://127.0.0.1:8765/transcribe</code></pre>
+        <div class="callout warn">
+          <svg><use href="assets/img/icons.svg#i-alert"/></svg>
+          <div>不要把接口暴露到公网。允许局域网时一定设 token；用完关掉开关并重启。</div>
+        </div>
+      </section>
+
+      <section class="docs-section" id="trouble">
+        <h2>排障</h2>
+        <h3>按了键没反应</h3>
+        <p>看菜单栏 / 托盘图标有没有变化。没有变化说明热键没接住：检查设置 → 通用里是否有「冲突」红字，以及辅助功能、输入监控两项权限。刚授权完，用「退出并重新打开」再试。</p>
+        <h3>浮层出来了但没字</h3>
+        <p>看浮层右侧秒数是否在涨：不涨是麦克风没录到（查设备、静音键、输入音量）；涨了但一直「在听…」通常是你还没说完整句，VAD 没封口。</p>
+        <h3>提示「声音太小了」</h3>
+        <p>峰值低于 2% 一律不上屏，这是防幻觉策略。靠近麦克风，或把系统输入音量拉高。</p>
+        <h3>提示「太短了」</h3>
+        <p>默认最短 400ms。双击热键可以取回上一次结果，不用重说。</p>
+        <h3>文字没进输入框</h3>
+        <p>提权窗口、密码框、部分自绘控件无法注入。切「逐字打字」再试，或从菜单复制后手动粘贴。</p>
+        <h3>权限明明给了还是不行</h3>
+        <p>大概率是同一份 app 有多个副本，各自独立授权。只保留一个，移动后再授权。也可以看菜单栏「权限状态…」或 <code>/tmp/eryu-perm.json</code>。</p>
+      </section>
+
+      <section class="docs-section" id="data">
+        <h2>数据与卸载</h2>
+        <p>数据都在本机，不上传：</p>
+        <ul>
+          <li><strong>macOS</strong>：<code>~/.eryu/</code>（config.toml、models/、history.json、stats.json）。</li>
+          <li><strong>Windows</strong>：<code>%APPDATA%\Eryu\</code>；exe 旁放 <code>portable.txt</code> 可改为便携模式。</li>
+          <li>历史最多保留 200 条，可在设置里清空；统计含 p50 / p95 延迟。</li>
+        </ul>
+        <p><strong>卸载 macOS</strong>：退出应用，把 app 移到废纸篓；需要彻底清除时再删 <code>~/.eryu</code>。</p>
+        <p><strong>卸载 Windows</strong>：双击 <code>uninstall-win.bat</code>，或运行 <code>uninstall-win.ps1 -PurgeData</code> 连配置、模型、历史一起删。</p>
+      </section>
+
+      <section class="docs-section" id="cli">
+        <h2>命令行自测</h2>
+        <p>macOS 版二进制在 <code>Eryu.app/Contents/MacOS/Eryu</code>，这些命令不需要辅助功能权限：</p>
+        <pre><code>--diagnose        引擎 / 模型 / 设备 / 历史 / 权限状态
+--mic-test 3      真实麦克风 → VAD → 识别，打印结果
+--self-test       固定文字 → 事件流端到端
+--print-last      取回崩溃前没上屏的那条
+--dump-config     当前生效的 config.toml</code></pre>
+        <p>遇到问题，优先用设置 → 诊断页的「复制状态」，它比截图更有用。</p>
+        <div class="callout">
+          <svg><use href="assets/img/icons.svg#i-info"/></svg>
+          <div>文档对应 v0.8.1。界面与文案可能随版本微调；以应用内设置为准。</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/img/logo.png" alt="" width="34" height="34">
+          <span class="brand-name">字在 <small>zzai</small></span>
+        </a>
+        <p>本地优先的 AI 语音输入法。按住说一句，松手文字就在光标处，音频不出本机。</p>
+      </div>
+      <div class="foot-col">
+        <h4>产品</h4>
+        <a href="index.html#features">功能</a>
+        <a href="models.html">模型库</a>
+        <a href="download.html">下载</a>
+        <a href="changelog.html">更新日志</a>
+      </div>
+      <div class="foot-col">
+        <h4>资源</h4>
+        <a href="docs.html">使用说明</a>
+        <a href="privacy.html">隐私说明</a>
+        <a href="index.html#faq">常见问题</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <a href="https://github.com/flyeasy/zzai/blob/main/LICENSE" target="_blank" rel="noopener">开源许可 ↗</a>
+        <a href="https://github.com/flyeasy/zzai/issues" target="_blank" rel="noopener">问题反馈 ↗</a>
+        <a href="https://github.com/k2-fsa/sherpa-onnx/releases" target="_blank" rel="noopener">模型上游 ↗</a>
+      </div>
+    </div>
+    <div class="wordmark" aria-hidden="true">字在</div>
+    <div class="foot-bottom">
+      <span>© <span data-year>2026</span> 字在 zzai · 免费开源 · 为 macOS 与 Windows 打造</span>
+      <span class="links">
+        <a href="privacy.html">隐私</a>
+        <a href="docs.html">文档</a>
+        <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">GitHub</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>
