@@ -126,10 +126,23 @@
         btn.textContent = "已复制";
         setTimeout(function () { btn.textContent = old; }, 1600);
       };
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(done).catch(done);
+      var fallback = function () {
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        if (ok) done();
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done).catch(fallback);
       } else {
-        done();
+        fallback();
       }
     });
   });
