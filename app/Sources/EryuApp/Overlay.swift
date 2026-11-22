@@ -355,10 +355,23 @@ final class OverlayContentView: NSView {
         dotsLabel.textColor = .white.withAlphaComponent(0.9)
         capsule.addSubview(dotsLabel)
 
-        for _ in 0..<5 {
+        // 电平条配色跟官网胶囊里的那排灯条一致：紫 → 青的横向渐变，圆头 + 轻微外发光。
+        // 每根条子取渐变上的一个采样点（官网是整排画一条 linear-gradient，这里逐根上色近似）。
+        let violet = (r: 0.486, g: 0.424, b: 1.000)   // #7C6CFF
+        let cyan = (r: 0.133, g: 0.827, b: 0.933)     // #22D3EE
+        for i in 0..<9 {
+            let t = CGFloat(i) / 8.0
+            let r = violet.r + (cyan.r - violet.r) * Double(t)
+            let g = violet.g + (cyan.g - violet.g) * Double(t)
+            let b = violet.b + (cyan.b - violet.b) * Double(t)
+            let color = NSColor(srgbRed: r, green: g, blue: b, alpha: 1.0)
             let bar = CALayer()
-            bar.cornerRadius = 1.75
-            bar.backgroundColor = NSColor(srgbRed: 1.0, green: 0.82, blue: 0.50, alpha: 1.0).cgColor
+            bar.cornerRadius = 1.25
+            bar.backgroundColor = color.cgColor
+            bar.shadowColor = color.cgColor
+            bar.shadowOpacity = 0.55
+            bar.shadowRadius = 2.5
+            bar.shadowOffset = .zero
             capsule.layer?.addSublayer(bar)
             bars.append(bar)
         }
@@ -387,11 +400,11 @@ final class OverlayContentView: NSView {
         capsule.layer?.cornerRadius = capsuleH / 2
         hintLabel.frame = CGRect(x: 0, y: 0, width: bounds.width, height: hintH)
 
-        let barW: CGFloat = 3.5
-        let barGap: CGFloat = 2.5
+        let barW: CGFloat = 2.5
+        let barGap: CGFloat = 2.0
         let left: CGFloat = 12
         for (i, bar) in bars.enumerated() {
-            bar.frame = CGRect(x: left + CGFloat(i) * (barW + barGap), y: (capsuleH - 24) / 2, width: barW, height: 24)
+            bar.frame = CGRect(x: left + CGFloat(i) * (barW + barGap), y: (capsuleH - 18) / 2, width: barW, height: 18)
         }
         let iconX = left + CGFloat(bars.count) * (barW + barGap) + 9
         let iconSize: CGFloat = 18
@@ -493,14 +506,16 @@ final class OverlayContentView: NSView {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         for (i, bar) in bars.enumerated() {
-            let wave = active ? (sin(tick * 6.0 + Double(i) * 0.9) + 1) / 2 : 0.18
-            // 始终在动（让人知道在听），但幅度跟着真实音量走：静音时只有很小的呼吸，
-            // 说话时明显起伏。这样既能看出「在录音」，也能看出「有没有真的收到声音」。
-            let energy = active ? 0.14 + 0.86 * amp : 0.0
-            let base = active ? energy * (0.35 + 0.65 * wave) : 0.12
-            let h = active ? min(20.0, max(8.0, 6.0 + 14.0 * base)) : 8.0
-            bar.frame = CGRect(x: bar.frame.minX, y: (40.0 - h) / 2, width: 3.5, height: h)
-            bar.opacity = Float(active ? 0.55 + 0.45 * amp : 0.35)
+            // 两层正弦叠出「灯条」的呼吸感（官网那排也是两个不同频率的正弦相加），
+            // 幅度仍跟真实音量走：静音只在很小的高度上呼吸，说话时明显起伏。
+            let p1 = (sin(tick * 6.0 + Double(i) * 0.55) + 1) / 2
+            let p2 = (sin(tick * 11.0 + Double(i) * 1.30) + 1) / 2
+            let wave = active ? (0.45 * p1 + 0.55 * p2) : 0.18
+            let energy = active ? 0.18 + 0.82 * amp : 0.0
+            let base = active ? energy * (0.30 + 0.70 * wave) : 0.12
+            let h = active ? min(20.0, max(4.0, 4.0 + 16.0 * base)) : 5.0
+            bar.frame = CGRect(x: bar.frame.minX, y: (40.0 - h) / 2, width: bar.frame.width, height: h)
+            bar.opacity = Float(active ? 0.60 + 0.40 * amp : 0.40)
         }
         CATransaction.commit()
         if ProcessInfo.processInfo.environment["ERYU_OVERLAY_DEBUG"] != nil, Int(tick * 30) % 15 == 0 {

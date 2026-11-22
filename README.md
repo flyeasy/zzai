@@ -1,8 +1,6 @@
-# Eryu（字在 zzai）
+# Eryu
 
 个人自用的 macOS / Windows 本地语音输入工具。按住快捷键说话，松开文字上屏；听写全程在本机处理。
-
-官网：<https://zzai.harmonyos.fun>　｜　安装包下载：[Releases](https://github.com/flyeasy/zzai/releases)
 
 ## 文档权威顺序（冲突时按此裁定）
 

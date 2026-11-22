@@ -42,9 +42,9 @@ const HINT_H: f32 = 16.0;
 const HINT_GAP: f32 = 4.0;
 const TOTAL_H: f32 = CAPSULE_H + HINT_GAP + HINT_H;
 const LEFT: f32 = 10.0;
-const BARS: usize = 5;
-const BAR_W: f32 = 4.0;
-const BAR_GAP: f32 = 2.5;
+const BARS: usize = 9;
+const BAR_W: f32 = 2.5;
+const BAR_GAP: f32 = 2.0;
 const ICON: f32 = 22.0;
 const RIGHT: f32 = 12.0;
 const TEXT_PT: f32 = 17.5;
@@ -608,24 +608,57 @@ fn render(hwnd: HWND, st: &Arc<Mutex<State>>, forced: i32) {
         // 用 level*9 时小声说话几乎看不出差别，用户看不出「到底有没有收到声音」。
         let db = 20.0 * (level.max(1e-5)).log10();
         let amp = ((db + 60.0) / 40.0).clamp(0.0, 1.0);
+        // 配色与官网/ mac 胶囊一致：紫 → 青横向渐变，圆头 + 轻微外发光。
+        let violet = (124.0f32, 108.0f32, 255.0f32); // #7C6CFF (r,g,b)
+        let cyan = (34.0f32, 211.0f32, 238.0f32);    // #22D3EE
+        let blend = |x: i32, y: i32, r: f32, g: f32, b: f32, a: f32| {
+            let p = buf.add(((y.max(0) as usize) * (w as usize) + (x.max(0) as usize)) * 4);
+            *p = (*p as f32 * (1.0 - a) + b * a) as u8;
+            *p.add(1) = (*p.add(1) as f32 * (1.0 - a) + g * a) as u8;
+            *p.add(2) = (*p.add(2) as f32 * (1.0 - a) + r * a) as u8;
+        };
         for i in 0..BARS {
-            let wave = if active { ((tick * 6.0 + i as f32 * 0.9).sin() + 1.0) / 2.0 } else { 0.18 };
-            // 始终有波形（说明在听），幅度跟真实音量走（说明有没有收到声音）
-            let energy = if active { 0.14 + 0.86 * amp } else { 0.0 };
-            let base = if active { energy * (0.35 + 0.65 * wave) } else { 0.12 };
-            let h = if active { (6.0 + 14.0 * base).max(8.0) } else { 8.0 };
-            let bh = px(h);
-            let bx = left + px((i as f32) * (BAR_W + BAR_GAP));
+            let t = i as f32 / (BARS - 1) as f32;
+            let cr = violet.0 + (cyan.0 - violet.0) * t;
+            let cg = violet.1 + (cyan.1 - violet.1) * t;
+            let cb = violet.2 + (cyan.2 - violet.2) * t;
+            // 两个不同频率的正弦叠加出「灯条」的呼吸感（与官网那排一致），幅度仍跟真实音量走。
+            let p1 = ((tick * 6.0 + i as f32 * 0.55).sin() + 1.0) / 2.0;
+            let p2 = ((tick * 11.0 + i as f32 * 1.30).sin() + 1.0) / 2.0;
+            let wave = if active { 0.45 * p1 + 0.55 * p2 } else { 0.18 };
+            let energy = if active { 0.18 + 0.82 * amp } else { 0.0 };
+            let base = if active { energy * (0.30 + 0.70 * wave) } else { 0.12 };
+            let h = if active { (4.0 + 16.0 * base).clamp(4.0, 20.0) } else { 5.0 };
+            let bh = px(h).max(2);
+            let bx = left + px(i as f32 * (BAR_W + BAR_GAP));
             let bw = px(BAR_W).max(2);
-            let by = (capsule_h - bh) / 2;
-            let lum = if active { 0.55 + 0.45 * amp } else { 0.35 };
+            let by = (capsule_h.saturating_sub(bh)) / 2;
+            let alpha = if active { 0.60 + 0.40 * amp } else { 0.40 };
+
+            // 外发光：条四周 3px 内按距离衰减加色
+            let glow = px(3.0).max(1);
+            for gy in by.saturating_sub(glow)..(by + bh + glow).min(capsule_h) {
+                for gx in bx.saturating_sub(glow)..(bx + bw + glow).min(w) {
+                    let dx = if gx < bx { bx - gx } else if gx >= bx + bw { gx - (bx + bw - 1) } else { 0 };
+                    let dy = if gy < by { by - gy } else if gy >= by + bh { gy - (by + bh - 1) } else { 0 };
+                    let d = ((dx * dx + dy * dy) as f32).sqrt();
+                    if d == 0.0 || d > glow as f32 { continue; }
+                    let k = (1.0 - d / glow as f32) * 0.30 * alpha;
+                    blend(gx, gy, cr, cg, cb, k);
+                }
+            }
+
+            // 条本体：上下两端做半圆（胶囊形）
+            let rad = bw as f32 / 2.0;
+            let cx = bx as f32 + bw as f32 / 2.0 - 0.5;
             for yy in by..(by + bh).min(capsule_h) {
                 for xx in bx..(bx + bw).min(w) {
-                    let p = buf.add(((yy * w + xx) * 4) as usize);
-                    // #F8D088 = (248,208,136) → BGR 136,208,248
-                    *p = (136.0 * lum) as u8;
-                    *p.add(1) = (208.0 * lum) as u8;
-                    *p.add(2) = (248.0 * lum) as u8;
+                    let ry = ((yy - by) as f32).min((by + bh - 1 - yy) as f32);
+                    if ry < rad {
+                        let dx = xx as f32 - cx;
+                        if dx * dx + (rad - ry) * (rad - ry) > rad * rad { continue; }
+                    }
+                    blend(xx, yy, cr, cg, cb, alpha);
                 }
             }
         }

@@ -46,7 +46,7 @@ done
 
 if [ "$FAST" != "1" ]; then
   step "6. 长语料（两分钟上限 / 连续说话 / 拔麦 / 换设备）"
-  for s in longcap nopause.py mic_unplug device_switch; do
+  for s in longcap.sh nopause.py mic_unplug.sh device_switch.sh; do
     cmd="./scripts/$s"
     case "$s" in *.sh) cmd="./scripts/$s" ;; *) cmd="python3 ./scripts/$s" ;; esac
     if OUT="$($cmd 2>&1)"; then ok "$s 通过"; else bad "$s 失败：$(echo "$OUT" | tail -1)"; fi

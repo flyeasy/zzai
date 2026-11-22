@@ -84,6 +84,58 @@ pub fn ensure_bundled_models() {
             }
         }
     }
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(d) = exe.parent() {
+            adopt_bundle_models(d, &dir);
+        }
+    }
+}
+
+/// 把压缩包里随 exe 一起给的大模型（`<exe>\models\...`）搬到数据目录。
+/// 直接双击 Eryu.exe 试用、没跑安装脚本的人，也应该是「装完就能说话」，而不是先被要求下载 233MB。
+fn adopt_bundle_models(exe_dir: &std::path::Path, dir: &std::path::Path) {
+    let src = exe_dir.join("models");
+    let entries = match std::fs::read_dir(&src) {
+        Ok(e) => e,
+        Err(_) => return,
+    };
+    let mut copied = 0;
+    for entry in entries.flatten() {
+        let from = entry.path();
+        let name = match from.file_name() {
+            Some(n) => n.to_owned(),
+            None => continue,
+        };
+        let to = dir.join(&name);
+        if to.exists() {
+            continue;
+        }
+        if from.is_dir() {
+            if copy_tree(&from, &to).is_ok() {
+                copied += 1;
+            }
+        } else if std::fs::copy(&from, &to).is_ok() {
+            copied += 1;
+        }
+    }
+    if copied > 0 {
+        crate::report(&format!("随包模型已就位：{} 项", copied));
+    }
+}
+
+fn copy_tree(from: &std::path::Path, to: &std::path::Path) -> std::io::Result<()> {
+    std::fs::create_dir_all(to)?;
+    for entry in std::fs::read_dir(from)? {
+        let entry = entry?;
+        let src = entry.path();
+        let dst = to.join(entry.file_name());
+        if src.is_dir() {
+            copy_tree(&src, &dst)?;
+        } else {
+            std::fs::copy(&src, &dst)?;
+        }
+    }
+    Ok(())
 }
 
 /// 确保磁盘上有一份和 exe 内置内容一致的 core dll，返回全路径。

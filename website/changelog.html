@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>更新日志 — 字在 zzai</title>
-<meta name="description" content="字在的版本更新记录。v0.8.1 是第一个公开版本：双引擎、120 秒长听写、热词自学习、选区改写与局域网听写。">
+<meta name="description" content="字在的版本更新记录。v0.8.2 已发布：双引擎、120 秒长听写、热词自学习、选区改写与局域网听写。">
 <meta name="theme-color" content="#05060a">
 <link rel="canonical" href="https://zzai.harmonyos.fun/changelog.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字在更新日志">
-<meta property="og:description" content="v0.8.1：第一个公开版本。">
+<meta property="og:description" content="v0.8.2 已发布。">
 <meta property="og:url" content="https://zzai.harmonyos.fun/changelog.html">
 <meta property="og:image" content="https://zzai.harmonyos.fun/assets/img/og.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
@@ -58,7 +58,7 @@
       <h1>更新日志</h1>
       <p>只写用户能感知的变化。逐条开发记录在仓库的 CHANGELOG.md 里。</p>
       <div class="hero-meta" style="margin-top:24px">
-        <span>最新 v0.8.1</span><span>·</span><span>2026-11-22</span>
+        <span>最新 v0.8.2</span><span>·</span><span>2026-11-22</span>
       </div>
     </div>
   </section>
@@ -66,6 +66,40 @@
   <section class="section-tight">
     <div class="wrap">
       <div class="prose">
+        <div class="release">
+          <div class="release-head">
+            <h2 id="v082">v0.8.2</h2>
+            <span class="release-date">2026-11-22</span>
+          </div>
+          <p>一次以「装好就能用」为目标的更新，Windows 端改动最多。</p>
+
+          <h3>安装与首次运行</h3>
+          <ul>
+            <li>Windows 解压后直接双击 <code>Eryu.exe</code> 就能说话：启动时自动把同目录 <code>models\</code> 里缺的模型搬进 <code>%APPDATA%\Eryu\models</code>，不必先跑安装脚本，也不会一上来就要求下载 233MB。</li>
+            <li>macOS 安装包的版本号与「关于」显示对齐到 0.8.2。</li>
+          </ul>
+
+          <h3>设置页</h3>
+          <ul>
+            <li>润色「附加要求」改用原生文本框，输入法与 <kbd>⌘V</kbd> 不再失灵；字段左对齐、标签在上，说明收进 ⓘ。</li>
+            <li>热词输入框每敲一个字就丢焦点的问题修好了。</li>
+            <li>自己窗口里的 <kbd>⌘V</kbd> / <kbd>⌘C</kbd> / <kbd>⌘A</kbd> 恢复可用。</li>
+          </ul>
+
+          <h3>听写与上屏</h3>
+          <ul>
+            <li>说话时弹出别的窗口，结果不再贴进新窗口：按下热键就记住当时的应用，松手先切回去再上屏；切不回去只提示，文字留在剪贴板。</li>
+            <li>长听写松手不再丢最后一句；超过 120 秒时改为保留开头那段。</li>
+            <li>润色不再给出半句话：按输入长度带 <code>max_tokens</code>，服务端截断时这一句用原文，并在胶囊里说明。</li>
+          </ul>
+
+          <h3>界面</h3>
+          <ul>
+            <li>菜单只留两行纯文本，去掉看不懂的图标与提示；排障入口收进 <code>--dev</code>。</li>
+            <li>录音时胶囊文字变宽，整段中心不再逐格右移。</li>
+          </ul>
+        </div>
+
         <div class="release">
           <div class="release-head">
             <h2 id="v081">v0.8.1</h2>

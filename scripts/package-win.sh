@@ -24,6 +24,13 @@ cat > "$OUT/README.txt" <<TXT
 Eryu ${VER}（Windows 64 位，预览版）
 ====================================
 
+第一次运行时 Windows 的两种提示（不是中毒，是没买代码签名证书）
+  1) 蓝色「Windows 已保护你的电脑」（SmartScreen）
+     点「更多信息」→「仍要运行」。因为安装包是从网上下载的、没做数字签名，
+     Windows 对所有新软件都这样，等下载量攒起来会自动消失。
+  2) 右键 exe → 属性 → 最下面「解除锁定」（Mark-of-the-Web）
+     或在这个文件夹里开 PowerShell 跑一次：Get-ChildItem -Recurse | Unblock-File
+
 安装
   1) 整个文件夹解压到任意位置（别直接在 zip 里点）
   2) 双击 install-win.bat（推荐；PowerShell 执行策略不拦它）

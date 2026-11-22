@@ -1,0 +1,9 @@
+[source.crates-io]
+replace-with = "rsproxy-sparse"
+[source.rsproxy-sparse]
+registry = "sparse+https://rsproxy.cn/index/"
+
+# sherpa-onnx 静态库：相对仓库根目录（macOS 用 vendor/sherpa/lib）。
+# Windows 上由 scripts/win-build.ps1 覆盖为 vendor/sherpa-win/lib（环境变量优先于这里）。
+[env]
+SHERPA_ONNX_LIB_DIR = { value = "vendor/sherpa/lib", relative = true }

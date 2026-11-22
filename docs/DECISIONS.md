@@ -1232,3 +1232,17 @@ m08346：「胶囊颜色还可以再深20%」。
 ## D-116 热词只让用户写「想听到的词」（2026-11-21）
 
 用户无法预知识别会错成什么字，要求他填「容易听错成什么」是把内部实现推给用户。决定：界面只收目标词，存成 `from == to` 的等价规则；`from→to` 的差异由历史学习与建议采纳自动产生。
+
+## D-118 图标定稿：深蓝底 + 白色麦克风（含 Z）+ 冷色微光（2026-11-22）
+
+- **选定**：`packaging/icons/gen/icon-03b.png`（Codex `image_gen` 生成，1024×1024）。
+- **为什么**：麦克风轮廓第一眼就说「这是语音输入」，麦克风头部里的负形 Z 是品牌（zzai），深海军蓝到近黑的渐变 + 一圈冷色微光给「安静的高级」；相对深红原版（icon-03）更适合长时间待在 Dock/桌面里。第一轮一度选过 icon-13a（渐变 Z + 声波），用户最终改选这一版，13a 留在候选目录。
+- **怎么落到两端**：`packaging/icons/from-gen.py <png>` 统一出 `packaging/Eryu.icns`（10 档尺寸）、`shell-win/assets/eryu.ico`（16–256）、`packaging/site/icon-{512,192,180}.png`（squircle 透明蒙版）。站点另外替换 `assets/img/{favicon-32,apple-touch-icon,logo}.png`。
+- **exe 文件图标**：Windows 侧此前只在窗口/托盘用 `LoadImage` 加载 ico，exe 自身没有资源段（资源管理器里是默认图标）。新增 `shell-win/app.rc` + `shell-win/build.rs`，用 llvm-rc 编出 `.res` 再 `cargo:rustc-link-arg`，资源段含 `RT_ICON(3)`、`RT_GROUP_ICON(14)`、`RT_VERSION(16)`（见 I-176）。
+- **未定**：品牌定稿后是否连 exe/安装目录一起改名仍是 R-139（0.9）。
+
+## D-119 电平条用官网那套「灯条」视觉（2026-11-22）
+
+- **定调**：胶囊里的音量指示不再是 5 根琥珀色实心竖条，改成 9 根细条、紫 `#7C6CFF` → 青 `#22D3EE` 横向渐变、圆头、各自带一点外发光；高度仍由真实 dB 驱动（-60dB→0，-20dB→1），再叠两个不同频率的正弦做呼吸感（官网 canvas 同款写法）。
+- **为什么**：用户对着官网效果说「你还不如学官网这个版本」——官网那排灯条是品牌视觉的一部分，胶囊作为最高频出现的界面，应该跟它一致。
+- **两端一致性**：mac `Overlay.swift`（CALayer 逐条上色 + shadow 做发光）与 Windows `overlay.rs`（像素缓冲里做渐变 + 半径 3px 的加色光晕 + 胶囊形裁剪）用同一组常量（9 根 / 2.5pt 宽 / 2pt 间距 / 4–20pt 高）。mac 侧已截图核对（`docs/overlay-mac-bars.png`）；Windows 侧同参数实现、编译通过，待下次 VM 在线时补截图。

@@ -1440,3 +1440,18 @@ var id: String { from + "\u{1}" + to }   // 计算属性 = 内容
 - 语音上屏：点名称框 → 按住右 Option 2.6s（`/tmp/t2.wav` 播放「这是一次测试，用来看看能不能写进自己的输入框。」）→ 名称框变「这是一次测试用来看看。」，`history` 记 `inserted`。
 
 **Windows 侧对照（2026-11-22）**：热词页是单个多行 `EDIT`（不存在「每行一个控件」的重建问题）；`EDIT` 原生处理 `Ctrl+V`，不依赖菜单派发。新增自测 `--dev --settings-input-selftest` 实测 `INPUT typed_ok=true typed_tail="abcde" inject=ok inject_ok=true`——键入 5 字不丢焦点、往自己窗口粘贴能落字并被读回。见 `docs/win-parity.md`「自家窗口输入」。
+
+## I-176 Windows exe 没有图标资源，资源管理器里显示默认图标
+
+- **现象**：换了 `.ico` 之后，窗口/托盘是新的，但下载下来的 `Eryu.exe` 在资源管理器、开始菜单里仍是默认图标。
+- **根因**：`shell-win/src/icon.rs` 走的是「把 ico 落到配置目录再 `LoadImage`」的运行时路线，exe 自身没有 `RT_ICON`/`RT_GROUP_ICON` 资源段；此前也没有 `.rc`/`build.rs`。
+- **修法**：新增 `shell-win/app.rc`（`1 ICON "assets/eryu.ico"` + VERSIONINFO）和 `shell-win/build.rs`：交叉编译时用 llvm-rc 编成 `.res`、`cargo:rustc-link-arg` 交给链接器；找不到工具就只打 warning 不阻断。
+- **踩到的坑（写下来省下次）**：llvm-rc 把**以 `/` 开头的参数一律当选项**，所以 `llvm-rc /FO/abs/app.res /abs/path/app.rc` 会报 `Exactly one input file should be provided.`——输入文件必须写成相对路径（`Command::current_dir` 到 `shell-win/`，传 `app.rc`）；输出用贴身写法 `/FO<abs>`。
+- **验证**：解析 PE 资源目录，`dist-win/Eryu.exe` 的资源类型为 `[3, 14, 16]`；包 `dist-win/Eryu-0.8.1-win64.zip` 重新打出并上传站点（169,111,853B，https 200）。
+
+## I-177 直接双击 Eryu.exe 试用时，随包模型没有被搬进数据目录
+
+- **现象**（用户 2026-11-22）：「Windows 版上来就提示一句，都没有模型」。用户是解压后直接双击 `Eryu.exe`（安装包 README 里写着「只想先试一下可以这样」），没有跑 `install-win.bat`。
+- **根因**：模型随包放在 `<解压目录>\models\`，只有 `install-win.ps1` 会把它拷到 `%APPDATA%\Eryu\models`。直接双击 exe 时没有任何代码去看 exe 旁边的 `models\`，于是引擎找不到 SenseVoice → 引导弹「先下载语音模型（约 233MB）」。
+- **修法**（`shell-win/src/core.rs`）：`ensure_bundled_models()` 末尾新增 `adopt_bundle_models(exe_dir, models_dir)`——若 exe 同级存在 `models\`，把里面缺的目录/文件递归拷到数据目录（已存在的跳过，不覆盖用户自己的），日志打「随包模型已就位：N 项」。这样「解压→双击」和「跑安装脚本」都是装完就能说话。
+- **验证**：`build-win.sh` + `package-win.sh` 通过；包 `dist-win/Eryu-0.8.2-win64.zip`（169MB，含 models 目录）。

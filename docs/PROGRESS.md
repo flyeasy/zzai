@@ -462,3 +462,5 @@
 - 2026-11-22：修掉「往自家输入框里粘贴/说话都没反应」——菜单栏 app 缺主菜单导致 ⌘V 不派发；补隐藏的「编辑」菜单后，手工粘贴与语音上屏都通过（I-175）。
 - 2026-11-22：Windows 对照 R-137——热词页是单 EDIT 不存在行重建；Ctrl+V 原生可用；新增 `--dev --settings-input-selftest`（`INPUT typed_ok=true typed_tail="abcde" inject=ok inject_ok=true`）。
 - 2026-11-22 品牌：字在/zzai 显示层改名 + 新图标 + 官网下载页（D-117、R-139）
+- 2026-11-22：图标定稿 icon-03b，落到 mac/Windows/官网；Windows 补 exe 资源段（I-176，D-118）。
+- 2026-11-22：胶囊电平条改官网灯条（紫→青渐变 + 发光），两端同步；两平台包重打。

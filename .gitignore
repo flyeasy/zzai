@@ -1,12 +1,25 @@
 # 构建产物
 core/target/
-shell-win/target/
 app/.build/
 build/
-dist/
-dist-win/
+
+# 第三方二进制（体积大，用 scripts/fetch-* 重建）
 vendor/sherpa/
+
+# 逆向材料与 spike 产物
+artifacts/
+self-improvement/
 
 # 系统/编辑器
 .DS_Store
 *.log
+
+dist/
+
+# 构建产物（Windows 增量构建会在 target/ 里留下未跟踪文件）
+shell-win/target/
+dist-win/Eryu-*-win-x64/
+
+# Windows 构建产物（包/中间产物不入库）
+dist-win/
+shell-win/assets/eryu_core.dll
