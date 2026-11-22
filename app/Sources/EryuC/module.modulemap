@@ -1,0 +1,5 @@
+module EryuC {
+    header "include/eryu_core.h"
+    link "eryu_core"
+    export *
+}

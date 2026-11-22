@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>字在 AI 输入法（zzai）</title>
+<meta name="description" content="按住说一句，松手就是文字。字在（zzai）是本地优先的 AI 语音输入法，支持 macOS 与 Windows。">
+<link rel="icon" href="icon-192.png">
+<style>
+  :root{
+    --bg:#fbfbfd; --fg:#0f172a; --muted:#5b6577; --card:#ffffff; --line:#e8eaf0;
+    --accent:#5b6bff; --accent2:#8a5cff; --ok:#10b981;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0b0d14; --fg:#f3f5fa; --muted:#9aa3b5; --card:#141826; --line:#232838;
+           --accent:#7d8bff; --accent2:#a97dff; }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Microsoft YaHei UI","Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.6}
+  .wrap{max-width:940px;margin:0 auto;padding:56px 24px 80px}
+  header{display:flex;align-items:center;gap:18px;margin-bottom:26px}
+  header img{width:76px;height:76px;border-radius:18px;box-shadow:0 10px 30px rgba(91,107,255,.28)}
+  h1{font-size:30px;line-height:1.25;margin:0}
+  h1 span{font-weight:400;color:var(--muted);font-size:18px;margin-left:8px}
+  .lead{font-size:17px;color:var(--muted);margin:6px 0 0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;margin:22px 0}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:720px){ .grid{grid-template-columns:1fr} }
+  .dl{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;
+      border:1px solid var(--line);border-radius:16px;padding:18px 20px;transition:.15s}
+  .dl:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .dl b{font-size:17px}
+  .dl small{color:var(--muted);font-size:13px}
+  .badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;
+         background:rgba(91,107,255,.12);color:var(--accent);margin-left:8px;vertical-align:2px}
+  h2{font-size:16px;margin:0 0 12px}
+  ol{margin:0;padding-left:22px;color:var(--muted)}
+  ol b{color:var(--fg);font-weight:600}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+       background:rgba(127,127,127,.12);padding:2px 6px;border-radius:6px;word-break:break-all}
+  .sha{font-size:12px;color:var(--muted);margin-top:10px}
+  .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+  footer{margin-top:40px;font-size:13px;color:var(--muted);text-align:center}
+  .dot{color:var(--ok)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="icon-512.png" alt="字在 zzai 图标">
+    <div>
+      <h1>字在 AI 输入法<span>zzai</span></h1>
+      <p class="lead">按住说一句，松手就是文字。本地识别优先，说完直接落到当前输入框。</p>
+    </div>
+  </header>
+
+  <div class="card">
+    <div class="grid">
+      <a class="dl" href="dl/zzai-0.8.1-win64.zip">
+        <b>Windows 10 / 11（64 位）<span class="badge">推荐</span></b>
+        <small>安装包约 161 MB · 已内置语音模型，装完即可说话</small>
+        <small>下载 .zip → 解压 → 右键 <code>install-win.ps1</code> 以管理员身份运行</small>
+      </a>
+      <a class="dl" href="dl/zzai-0.8.1-macos.zip">
+        <b>macOS 13 及以上（Apple 芯片）</b>
+        <small>约 30 MB · 首次打开需在「系统设置 → 隐私与安全」允许</small>
+        <small>下载 .zip → 解压得到「字在」→ 拖进「应用程序」</small>
+      </a>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <div>版本 0.8.1 · <span class="dot">●</span> 2026-11-22</div>
+      <div>SHA256：<code id="sha">见下方说明</code></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>第一次用，三步</h2>
+    <ol>
+      <li><b>装好并打开</b>：出现引导，先确认语音模型（安装包已带，通常直接「下一步」）。</li>
+      <li><b>试说一句</b>：按提示读那句示例，看到文字出现才会解锁「下一步」。</li>
+      <li><b>开始用</b>：把光标放进任何输入框，<b>按住</b>热键说话，<b>松手</b>文字就落进去；说错了按 Esc 取消。</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>它是什么</h2>
+    <p class="lead" style="margin:0 0 10px">字在（zzai）把「说话 → 文字」压缩成一次按键：本地 SenseVoice 识别，可选接你自己的大模型做润色；默认不联网，音频不出本机。</p>
+    <div class="row">
+      <div>本地识别 · 可离线</div><div>中文/英文/数字与标点</div><div>选中文字可改写</div><div>历史与统计可关</div>
+    </div>
+  </div>
+
+  <footer>
+    字在 zzai · 安装包与服务端均为自建，不收集你输入的内容
+  </footer>
+</div>
+</body>
+</html>

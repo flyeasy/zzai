@@ -1,0 +1,30 @@
+[package]
+name = "eryu-core"
+version = "0.8.1"
+edition = "2021"
+publish = false
+
+[lib]
+name = "eryu_core"
+# 只出静态库：避免 Swift 链接到 dylib（D-002 / smoke 检查项）
+crate-type = ["staticlib", "rlib", "cdylib"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = { version = "2", default-features = false, features = ["tls", "native-certs", "json"] }
+toml = "0.8"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+cpal = "0.15.3"
+sherpa-onnx = { version = "2.0.1", default-features = false, features = ["static"] }
+nnnoiseless = { version = "0.5.2", default-features = false }
+
+[features]
+# 关掉可让纯逻辑测试不必编译 ONNX Runtime（CI/快速迭代用）
+asr = []
+audio = []
+
+[profile.release]
+opt-level = 2
+debug = 1
+panic = "unwind"

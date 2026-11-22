@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string>字在</string>
+	<key>CFBundleExecutable</key>
+	<string>Eryu</string>
+	<key>CFBundleIconFile</key>
+	<string>Eryu.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.eryu.app</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>字在</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.8.1</string>
+	<key>CFBundleVersion</key>
+	<string>12</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string>字在（zzai）— 本地优先的 AI 语音输入法</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>字在需要麦克风，才能把你的语音在本地转成文字。音频只在本机处理，不上传。</string>
+</dict>
+</plist>
