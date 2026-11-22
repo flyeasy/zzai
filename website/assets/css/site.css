@@ -1622,6 +1622,16 @@ table.model .mono {
   overflow-wrap: anywhere;
   max-width: 320px;
 }
+table.model a.dl-mini {
+  color: #d6d0ff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(124, 108, 255, 0.5);
+}
+table.model a.dl-mini:hover {
+  color: #fff;
+  text-decoration-color: #8f82ff;
+}
 table.model .tag {
   display: inline-block;
   margin-left: 7px;
@@ -1650,6 +1660,10 @@ table.model .tag {
   border-radius: 20px;
   background: linear-gradient(170deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012));
   overflow: hidden;
+}
+.dl-card.full {
+  border-color: rgba(34, 211, 238, 0.3);
+  background: linear-gradient(170deg, rgba(34, 211, 238, 0.12), rgba(124, 108, 255, 0.07) 55%, rgba(255, 255, 255, 0.01));
 }
 .dl-card.primary {
   border-color: rgba(124, 108, 255, 0.35);

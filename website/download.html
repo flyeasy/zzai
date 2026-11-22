@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>下载 — 字在 zzai 本地 AI 语音输入法</title>
-<meta name="description" content="下载字在 v0.8.1：macOS（Apple Silicon，9.4MB）与 Windows（x64，161MB，随包含 SenseVoice）。含安装步骤、系统要求与 SHA-256 校验。">
+<meta name="description" content="下载字在 v0.8.1：macOS（Apple Silicon，9.4MB）与 Windows（x64，161MB，随包含 SenseVoice），另提供含全部模型的完整离线包。含安装步骤、模型单独下载、系统要求与 SHA-256 校验。">
 <meta name="theme-color" content="#05060a">
 <link rel="canonical" href="https://zzai.harmonyos.fun/download.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="下载字在 v0.8.1">
-<meta property="og:description" content="macOS 与 Windows 两个平台，免费开源。第一次使用约三分钟。">
+<meta property="og:description" content="macOS 与 Windows 两个平台，免费开源。可选含全部模型的完整离线包，一次装齐。">
 <meta property="og:url" content="https://zzai.harmonyos.fun/download.html">
 <meta property="og:image" content="https://zzai.harmonyos.fun/assets/img/og.png">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
@@ -121,6 +121,124 @@
     </div>
   </section>
 
+  <section class="section" id="full" style="padding-top:56px">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Offline bundle</div>
+          <h2 class="h2">一次拿全，<span class="grad-text">彻底离线。</span></h2>
+        </div>
+        <p class="lede">把六个模型一起塞进安装包。适合离线机器、内网，或不想等首次下载的人；文件很大，只想要轻量安装就用上面的版本。</p>
+      </div>
+      <div class="dl-grid">
+        <article class="dl-card full" data-reveal>
+          <div class="dl-os">
+            <svg><use href="assets/img/icons.svg#i-apple"/></svg>
+            <h3>macOS 完整离线版</h3>
+            <span class="ver">v0.8.1 · arm64</span>
+          </div>
+          <div class="dl-meta">
+            <span><svg><use href="assets/img/icons.svg#i-dl"/></svg> 1.3 GB · 含全部模型</span>
+            <span><svg><use href="assets/img/icons.svg#i-box"/></svg> 解压后约 1.3 GB</span>
+          </div>
+          <p style="color:#9aa0b8;font-size:13.5px;line-height:1.8">
+            解压后双击 <code>install-models.command</code>，脚本会把模型复制到 <code>~/.eryu/models</code> 并打开应用；也可以自己复制。首次打开仍需「仍要打开」。
+          </p>
+          <div style="margin-top:22px">
+            <a class="btn btn-ghost btn-block" href="/dl/zzai-0.8.1-mac-arm64-full.zip" download>
+              <svg><use href="assets/img/icons.svg#i-dl"/></svg> 下载完整离线包
+            </a>
+          </div>
+          <div class="sha"><code id="sha-mac-full">8a6379c0d35711048b41a76a94a74f27362b7ce109b6e2958e6312235fee802f</code><button type="button" data-copy="sha-mac-full">复制</button></div>
+        </article>
+
+        <article class="dl-card full" data-reveal data-reveal-delay="1">
+          <div class="dl-os">
+            <svg><use href="assets/img/icons.svg#i-win"/></svg>
+            <h3>Windows 完整离线版</h3>
+            <span class="ver">v0.8.1 · x64</span>
+          </div>
+          <div class="dl-meta">
+            <span><svg><use href="assets/img/icons.svg#i-dl"/></svg> 1.3 GB · 含全部模型</span>
+            <span><svg><use href="assets/img/icons.svg#i-box"/></svg> 解压后约 1.6 GB</span>
+          </div>
+          <p style="color:#9aa0b8;font-size:13.5px;line-height:1.8">
+            解压后双击 <code>install-full.bat</code>：安装应用、复制全部模型、创建开始菜单项，完成后自动启动。标点、声纹、Qwen3 都不用再下。
+          </p>
+          <div style="margin-top:22px">
+            <a class="btn btn-ghost btn-block" href="/dl/zzai-0.8.1-win64-full.zip" download>
+              <svg><use href="assets/img/icons.svg#i-dl"/></svg> 下载完整离线包
+            </a>
+          </div>
+          <div class="sha"><code id="sha-win-full">ac491c9bb9facb87b099d7e78cec60ce90a8838e6add5c92aaa0c65212ee85db</code><button type="button" data-copy="sha-win-full">复制</button></div>
+        </article>
+      </div>
+      <div class="callout" data-reveal style="margin-top:22px">
+        <svg><use href="assets/img/icons.svg#i-info"/></svg>
+        <div>完整包里的应用本体与轻量包完全相同，只是多带了模型。装好之后识别链路不需要联网；只有你手动开启润色、诊断上传时才会联网。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="models-dl" style="padding-top:36px">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Model files</div>
+          <h2 class="h2">只补某一个模型。</h2>
+        </div>
+        <p class="lede">已经装好应用、只缺某个模型时，可以单独下载。完整离线版已经包含下表全部内容，不需要重复下载。</p>
+      </div>
+      <div class="table-wrap" data-reveal>
+        <table class="model">
+          <thead><tr><th>模型</th><th>用途</th><th>解包 / 下载</th><th>文件</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>SenseVoice<span class="tag">必需</span></td>
+              <td>默认识别引擎，中英混说</td>
+              <td class="mono">247 / 166 MB</td>
+              <td><a class="dl-mini" href="https://officeace.harmonyos.fun/eryu-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2025-09-09.tar.bz2">tar.bz2 ↗</a></td>
+            </tr>
+            <tr>
+              <td>Qwen3-ASR</td>
+              <td>短句精度档，比 SenseVoice 慢约 3 倍</td>
+              <td class="mono">972 / 879 MB</td>
+              <td><a class="dl-mini" href="https://officeace.harmonyos.fun/eryu-models/sherpa-onnx-qwen3-asr-0.6B-int8-2026-03-25.tar.bz2">tar.bz2 ↗</a></td>
+            </tr>
+            <tr>
+              <td>标点模型</td>
+              <td>自动补标点，默认开启</td>
+              <td class="mono">76 / 65 MB</td>
+              <td><a class="dl-mini" href="https://officeace.harmonyos.fun/eryu-models/sherpa-onnx-punct-ct-transformer-zh-en-vocab272727-2024-04-12-int8.tar.bz2">tar.bz2 ↗</a></td>
+            </tr>
+            <tr>
+              <td>声纹模型</td>
+              <td>「只录我的声音」用的说话人向量</td>
+              <td class="mono">39 MB</td>
+              <td><a class="dl-mini" href="https://officeace.harmonyos.fun/eryu-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx">onnx ↗</a></td>
+            </tr>
+            <tr>
+              <td>GTCRN 降噪</td>
+              <td>压住持续的环境噪声</td>
+              <td class="mono">1 MB</td>
+              <td><a class="dl-mini" href="https://officeace.harmonyos.fun/eryu-models/gtcrn_simple.onnx">onnx ↗</a></td>
+            </tr>
+            <tr>
+              <td>Silero VAD</td>
+              <td>判断「说完了没有」</td>
+              <td class="mono">1 MB</td>
+              <td><a class="dl-mini" href="https://officeace.harmonyos.fun/eryu-models/silero_vad.onnx">onnx ↗</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="prose" data-reveal style="margin-top:18px;max-width:860px">
+        <p>手动安装：<code>.tar.bz2</code> 解压到 <code>~/.eryu/models/</code>（Windows 为 <code>%APPDATA%\Eryu\models\</code>），<code>.onnx</code> 直接放进去。应用设置里的「模型」页会识别已有文件；也可以在应用内直接下载，支持断点续传。</p>
+        <p>镜像地址与上游来源、许可信息见 <a href="models.html">模型库</a>。</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="install-mac" style="padding-top:56px">
     <div class="wrap">
       <div class="section-head">
@@ -128,7 +246,7 @@
           <div class="eyebrow">Install · macOS</div>
           <h2 class="h2">装好，大约三分钟。</h2>
         </div>
-        <p class="lede">你需要：Apple Silicon Mac、macOS 13 或更新、约 300MB 空闲磁盘（含模型）。</p>
+        <p class="lede">你需要：Apple Silicon Mac、macOS 13 或更新。轻量包约占 300MB；完整离线包约 1.3GB。</p>
       </div>
       <div class="steps-list" data-reveal>
         <div class="s">
@@ -140,8 +258,8 @@
           <p>提示「无法验证开发者」时，打开「系统设置 → 隐私与安全性」，在页面下方点「仍要打开」，再输入一次密码确认。</p>
         </div>
         <div class="s">
-          <h4>跟着引导下载模型</h4>
-          <p>首次启动会问是否下载语音模型：SenseVoice 约 247MB、标点 65MB、降噪约 1MB；使用默认镜像，几分钟内完成。</p>
+          <h4>准备模型</h4>
+          <p>轻量包：首次启动会问是否下载语音模型（SenseVoice 约 247MB、标点 65MB、降噪约 1MB），使用默认镜像，几分钟内完成。完整离线包：双击包内的 <code>install-models.command</code>，它会把模型复制到 <code>~/.eryu/models</code> 并打开应用。</p>
         </div>
         <div class="s">
           <h4>授予三项权限</h4>
@@ -166,16 +284,16 @@
           <div class="eyebrow">Install · Windows</div>
           <h2 class="h2">解压，跑一次安装脚本。</h2>
         </div>
-        <p class="lede">你需要：Windows 10 或 11、64 位、约 500MB 空闲磁盘（含随包模型）。</p>
+        <p class="lede">你需要：Windows 10 或 11、64 位。轻量包约 500MB；完整离线包约 1.3GB。</p>
       </div>
       <div class="steps-list" data-reveal>
         <div class="s">
           <h4>完整解压</h4>
-          <p>把 zip 解压到任意位置，不要直接在压缩包里双击 exe。解压后能看到 Eryu.exe、models\ 与 install-win.bat。</p>
+          <p>把 zip 解压到任意位置，不要直接在压缩包里双击 exe。标准包能看到 Eryu.exe、models\ 与 install-win.bat；完整离线包还多一个 models-extra\ 与 install-full.bat。</p>
         </div>
         <div class="s">
           <h4>双击 install-win.bat</h4>
-          <p>它会创建开始菜单快捷方式，不需要管理员权限。若 SmartScreen 拦截，点「更多信息 → 仍要运行」。</p>
+          <p>标准包双击 install-win.bat；完整离线包双击 install-full.bat，它会一并装好全部模型。两者都会创建开始菜单快捷方式，不需要管理员权限。若 SmartScreen 拦截，点「更多信息 → 仍要运行」。</p>
         </div>
         <div class="s">
           <h4>从开始菜单启动</h4>
@@ -217,8 +335,9 @@
           <tbody>
             <tr><td>系统版本</td><td>macOS 13 Ventura 及以上</td><td>Windows 10 / 11，64 位</td></tr>
             <tr><td>处理器</td><td>Apple Silicon（arm64），不支持 Intel</td><td>x64（AMD / Intel）</td></tr>
-            <tr><td>安装包</td><td class="mono">9.4 MB</td><td class="mono">161 MB（含 SenseVoice）</td></tr>
-            <tr><td>首次模型下载</td><td>约 235 MB</td><td>0（随包）；标点 / 声纹 / Qwen3 按需</td></tr>
+            <tr><td>标准安装包</td><td class="mono">9.4 MB</td><td class="mono">161 MB（含 SenseVoice）</td></tr>
+            <tr><td>完整离线包</td><td class="mono">1.3 GB</td><td class="mono">1.3 GB（含全部模型）</td></tr>
+            <tr><td>首次模型下载</td><td>约 235 MB（完整包为 0）</td><td>0（随包）；标点 / 声纹 / Qwen3 按需（完整包已带）</td></tr>
             <tr><td>运行内存</td><td>常驻约 554–569 MB</td><td>常驻约 550 MB 量级（与模型有关）</td></tr>
             <tr><td>权限</td><td>麦克风、辅助功能、输入监控</td><td>麦克风、无障碍/输入模拟（按系统提示）</td></tr>
             <tr><td>网络</td><td>仅下载模型时需要；识别不需要</td><td>同左</td></tr>
@@ -246,7 +365,7 @@ shasum -a 256 ~/Downloads/zzai-0.8.1-mac-arm64.zip
 # Windows（PowerShell / CMD）
 certutil -hashfile zzai-0.8.1-win64.zip SHA256
 # fed58b67908cc3a7b78be54dfb51cf244c3a278d0e2412c6a9e25819bcd21a44</code></pre>
-        <p>同一份安装包也会发布在 <a href="https://github.com/flyeasy/zzai/releases" target="_blank" rel="noopener">GitHub Releases</a>。两处的文件内容一致，只是站点上的文件名统一成了 zzai 前缀。</p>
+        <p>同一份轻量安装包也会发布在 <a href="https://github.com/flyeasy/zzai/releases" target="_blank" rel="noopener">GitHub Releases</a>。两处的文件内容一致，只是站点上的文件名统一成了 zzai 前缀。完整离线包的 SHA-256 显示在各自下载卡上，可直接复制。</p>
         <p>源码、构建脚本与设计文档在 <a href="https://github.com/flyeasy/zzai" target="_blank" rel="noopener">github.com/flyeasy/zzai</a>，采用 Apache-2.0 许可。想自己编译，见仓库 README 的「从源码构建」。</p>
       </div>
     </div>
